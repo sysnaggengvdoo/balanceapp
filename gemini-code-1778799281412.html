@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>バランサー安全率判定ツール</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            font-size: 20px;
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result-area {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+            color: #fff;
+        }
+        .result-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .result-detail {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>バランサー安全率判定ツール</h1>
+    
+    <div class="form-group">
+        <label for="weight">ローター総重量 (kg):</label>
+        <input type="number" id="weight" placeholder="例: 2200" required>
+    </div>
+
+    <div class="form-group">
+        <label for="diameter">シャフト径 / 軸受部 (mm):</label>
+        <input type="number" id="diameter" placeholder="例: 160" required>
+    </div>
+
+    <div class="form-group">
+        <label for="surface">表面状態 (接触部):</label>
+        <select id="surface">
+            <option value="coating">13Cr溶射皮膜あり（限界: 30MPa）</option>
+            <option value="bare">母材そのまま（限界: 250MPa）</option>
+            <option value="collar">保護カラー装着済み</option>
+        </select>
+    </div>
+
+    <button onclick="calculateSafety()">判定する</button>
+
+    <div id="result-area">
+        <div class="result-title" id="judgement"></div>
+        <div class="result-detail" id="sf-display"></div>
+        <div class="result-detail" id="stress-display"></div>
+        <div class="result-detail" id="advice" style="margin-top:15px; font-weight:bold;"></div>
+    </div>
+</div>
+
+<script>
+    function calculateSafety() {
+        const weight = parseFloat(document.getElementById('weight').value);
+        const diameter = parseFloat(document.getElementById('diameter').value);
+        const surface = document.getElementById('surface').value;
+        const resultArea = document.getElementById('result-area');
+        
+        if (!weight || !diameter) {
+            alert("重量とシャフト径を入力してください。");
+            return;
+        }
+
+        // --- カラー装着済みの場合は計算スキップ ---
+        if (surface === 'collar') {
+            showResult("#2ecc71", "✅ そのまま作業OK", "安全率: 50.0 以上", "発生応力: 約 5 MPa (圧縮のみ)", "カラーによる保護が有効です。安全に作業可能です。");
+            return;
+        }
+
+        // --- 応力計算ロジック (ヘルツの接触応力) ---
+        const g = 9.8;
+        const rollerDia = 110;
+        const rollerWidth = 20;
+        const angleRad = 45 * Math.PI / 180;
+        const E = 210000;
+        const nu = 0.3;
+
+        // 片側コロ1つあたりの負荷荷重 (N)
+        const P = (weight * g / 2) / Math.cos(angleRad);
+        
+        // 等価半径
+        const Req = ((diameter / 2) * (rollerDia / 2)) / ((diameter / 2) + (rollerDia / 2));
+        
+        // 等価ヤング率
+        const Estar = E / (2 * (1 - Math.pow(nu, 2)));
+        
+        // 接触面半幅 b
+        const b = Math.sqrt((4 * P * Req) / (Math.PI * rollerWidth * Estar));
+        
+        // 最大接触面圧 p_max
+        const p_max = (2 * P) / (Math.PI * b * rollerWidth);
+        
+        // 最大内部せん断応力 tau_max
+        const tau_max = 0.30 * p_max;
+
+        // --- 安全率の判定 ---
+        let SF = 0;
+        let limitStress = 0;
+        let color = "";
+        let judgement = "";
+        let advice = "";
+
+        if (surface === 'coating') {
+            limitStress = 30; // 溶射の限界強度
+            SF = limitStress / tau_max;
+            
+            if (SF >= 1.5) {
+                color = "#2ecc71"; // 緑
+                judgement = "✅ そのまま作業OK";
+                advice = "皮膜の限界強度に対して安全です。";
+            } else if (SF >= 1.0) {
+                color = "#f39c12"; // 黄
+                judgement = "⚠️ 要注意";
+                advice = "限界ギリギリです。アンバランスの衝撃で割れるリスクがあります。";
+            } else {
+                color = "#e74c3c"; // 赤
+                judgement = "❌ 作業中止！カラー必須";
+                advice = "皮膜が確実に割れます。直受けでの作業は絶対にやめてください。";
+            }
+        } else if (surface === 'bare') {
+            limitStress = 250; // 母材(鋼)の限界強度
+            SF = limitStress / tau_max;
+            
+            if (SF >= 1.2) {
+                color = "#2ecc71"; // 緑
+                judgement = "✅ そのまま作業OK";
+                advice = "母材の限界強度に対して安全です。";
+            } else if (SF >= 1.0) {
+                color = "#f39c12"; // 黄
+                judgement = "⚠️ 要注意 (圧痕リスク)";
+                advice = "衝撃でコロの跡（凹み）が残る可能性があります。";
+            } else {
+                color = "#e74c3c"; // 赤
+                judgement = "❌ 作業中止！";
+                advice = "母材が塑性変形（凹み・むしれ）を起こします。";
+            }
+        }
+
+        // --- 結果の表示 ---
+        showResult(
+            color, 
+            judgement, 
+            `安全率 (SF): ${SF.toFixed(2)}`, 
+            `内部せん断応力: ${tau_max.toFixed(0)} MPa`, 
+            advice
+        );
+    }
+
+    function showResult(color, judgement, sfText, stressText, advice) {
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = "block";
+        resultArea.style.backgroundColor = color;
+        
+        document.getElementById('judgement').innerText = judgement;
+        document.getElementById('sf-display').innerText = sfText;
+        document.getElementById('stress-display').innerText = stressText;
+        document.getElementById('advice').innerText = advice;
+    }
+</script>
+
+</body>
+</html>
