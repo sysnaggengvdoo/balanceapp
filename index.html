@@ -26,6 +26,11 @@
         .dev-alert { background-color: #e74c3c; color: white; text-align: center; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4); animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
 
+        /* ゴム非圧縮性（物理限界）アラート */
+        .physics-alert { background-color: #fff3cd; color: #856404; border: 2px solid #ffeeba; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 13px; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .physics-alert.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        .limit-value { font-weight: bold; color: #d35400; font-size: 20px; font-family: monospace; }
+
         .diagram-img {
             width: 100%;
             max-width: 320px;
@@ -186,10 +191,19 @@
             <div class="result-box">
                 <div class="result-item"><span class="result-label">接触時パッキン長 (h')</span> <span id="pack_h_prime" class="result-value">-</span></div>
                 <hr>
-                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後パッキン長 (h'')</span> <span id="pack_h_double" class="result-value" style="color:#d35400;">-</span></div>
+                <div class="result-item" style="opacity: 0.5;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締め後 (h'')</span> <span id="pack_h_double" class="result-value" style="color:#7f8c8d;">-</span></div>
             </div>
-            <div class="highlight-result">
-                <div class="result-item" style="margin-bottom:0;"><span class="result-label">5%締め後のスキ (C)</span> <span id="pack_c" class="result-value">-</span></div>
+            <div class="highlight-result" style="opacity: 0.5; background: #f1f3f5; border-color: #dee2e6;">
+                <div class="result-item" style="margin-bottom:0;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締めスキ (C)</span> <span id="pack_c" class="result-value" style="color:#7f8c8d;">-</span></div>
+            </div>
+
+            <div id="pack_physics_alert" class="physics-alert">
+                <div style="font-weight: bold; margin-bottom: 5px;">⚠️ 充填率100%（フル・コンプレッション）到達</div>
+                ゴムの非圧縮性により、h'到達時点で空間が埋まり切るため、これ以上の体積圧縮（理論値の5%締め等）は物理的に不可能です。<br>
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3c08f; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: bold;">実際の締め切り限界スキ:</span>
+                    <span id="pack_c_limit" class="limit-value">-</span>
+                </div>
             </div>
         </div>
     </div>
@@ -218,10 +232,19 @@
                 <div class="result-item"><span class="result-label">初期体積 (Vb)</span> <span id="cp_vb" class="result-value">-</span></div>
                 <div class="result-item"><span class="result-label">接触時ゴム高さ (h')</span> <span id="cp_h_prime" class="result-value">-</span></div>
                 <hr>
-                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後ゴム高さ (h'')</span> <span id="cp_h_double" class="result-value" style="color:#d35400;">-</span></div>
+                <div class="result-item" style="opacity: 0.5;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締め後 (h'')</span> <span id="cp_h_double" class="result-value" style="color:#7f8c8d;">-</span></div>
             </div>
-            <div class="highlight-result">
-                <div class="result-item" style="margin-bottom:0;"><span class="result-label">有効圧縮率5%のスキ (C)</span> <span id="cp_c_final" class="result-value">-</span></div>
+            <div class="highlight-result" style="opacity: 0.5; background: #f1f3f5; border-color: #dee2e6;">
+                <div class="result-item" style="margin-bottom:0;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締めスキ (C)</span> <span id="cp_c_final" class="result-value" style="color:#7f8c8d;">-</span></div>
+            </div>
+
+            <div id="cp_physics_alert" class="physics-alert">
+                <div style="font-weight: bold; margin-bottom: 5px;">⚠️ 充填率100%（フル・コンプレッション）到達</div>
+                ゴムの非圧縮性により、h'到達時点で空間が埋まり切るため、これ以上の体積圧縮（理論値の5%締め等）は物理的に不可能です。<br>
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3c08f; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: bold;">実際の締め切り限界スキ:</span>
+                    <span id="cp_c_limit" class="limit-value">-</span>
+                </div>
             </div>
         </div>
     </div>
@@ -246,10 +269,19 @@
             <div class="result-box">
                 <div class="result-item"><span class="result-label">接触時ゴム高さ (h')</span> <span id="cyl_h0_res" class="result-value">-</span></div>
                 <hr>
-                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後ゴム高さ (h'')</span> <span id="cyl_h5_res" class="result-value" style="color:#d35400;">-</span></div>
+                <div class="result-item" style="opacity: 0.5;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締め後 (h'')</span> <span id="cyl_h5_res" class="result-value" style="color:#7f8c8d;">-</span></div>
             </div>
-            <div class="highlight-result">
-                <div class="result-item" style="margin-bottom:0;"><span class="result-label">5%締め後のスキ (C)</span> <span id="cyl_c_5" class="result-value">-</span></div>
+            <div class="highlight-result" style="opacity: 0.5; background: #f1f3f5; border-color: #dee2e6;">
+                <div class="result-item" style="margin-bottom:0;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締めスキ (C)</span> <span id="cyl_c_5" class="result-value" style="color:#7f8c8d;">-</span></div>
+            </div>
+
+            <div id="cyl_physics_alert" class="physics-alert">
+                <div style="font-weight: bold; margin-bottom: 5px;">⚠️ 充填率100%（フル・コンプレッション）到達</div>
+                ゴムの非圧縮性により、h'到達時点で空間が埋まり切るため、これ以上の体積圧縮（理論値の5%締め等）は物理的に不可能です。<br>
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3c08f; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: bold;">実際の締め切り限界スキ:</span>
+                    <span id="cyl_c_limit" class="limit-value">-</span>
+                </div>
             </div>
         </div>
     </div>
@@ -303,9 +335,9 @@
                 const w_ds = w * (de_ratio / 100) + cup;
                 const F_ds = (w_ds * g) / (2 * Math.cos(angle * Math.PI / 180));
                 const R_eq_ds = ((dia_ds / 2) * (r_dia / 2)) / ((dia_ds / 2) + (r_dia / 2));
-                const pmax_ds = Math.sqrt((F_ds * Estar) / (Math.PI * r_w * R_eq_ds)); // 最大接触応力
-                stress_ds = 0.30 * pmax_ds; // 内部の最大せん断応力
-                sf_ds = surf_ds / stress_ds; // 安全率
+                const pmax_ds = Math.sqrt((F_ds * Estar) / (Math.PI * r_w * R_eq_ds)); 
+                stress_ds = 0.30 * pmax_ds; 
+                sf_ds = surf_ds / stress_ds; 
             }
 
             // 反直結側 (AS) の計算
@@ -314,9 +346,9 @@
                 const w_as = w * (100 - de_ratio) / 100;
                 const F_as = (w_as * g) / (2 * Math.cos(angle * Math.PI / 180));
                 const R_eq_as = ((dia_as / 2) * (r_dia / 2)) / ((dia_as / 2) + (r_dia / 2));
-                const pmax_as = Math.sqrt((F_as * Estar) / (Math.PI * r_w * R_eq_as)); // 最大接触応力
-                stress_as = 0.30 * pmax_as; // 内部の最大せん断応力
-                sf_as = surf_as / stress_as; // 安全率
+                const pmax_as = Math.sqrt((F_as * Estar) / (Math.PI * r_w * R_eq_as)); 
+                stress_as = 0.30 * pmax_as; 
+                sf_as = surf_as / stress_as; 
             }
 
             // UI更新
@@ -376,32 +408,58 @@
         function calculatePacking() {
             const d = parseFloat(document.getElementById('pack_d').value), n = parseFloat(document.getElementById('pack_n').value), a0 = parseFloat(document.getElementById('pack_a0').value), D = parseFloat(document.getElementById('pack_D').value), L = parseFloat(document.getElementById('pack_L').value), a = parseFloat(document.getElementById('pack_a').value), b = parseFloat(document.getElementById('pack_b').value), h0 = parseFloat(document.getElementById('pack_h0').value), t = parseFloat(document.getElementById('pack_t_total').value);
             if ([d,n,a0,D,L,a,b,h0,t].some(isNaN)) return;
-            const h1 = ((a*a - n*b*b) / (a0*a0 - n*d*d)) * h0, h2 = h1 * 0.95, c = (t + h2 + L) - D;
+            
+            const h1 = ((a*a - n*b*b) / (a0*a0 - n*d*d)) * h0;
+            const h2 = h1 * 0.95;
+            const c = (t + h2 + L) - D;
+            const c_limit = (t + h1 + L) - D; // 物理限界スキ（h1ベース）
+
             document.getElementById('pack_h_prime').innerText = h1.toFixed(1) + " mm";
             document.getElementById('pack_h_double').innerText = h2.toFixed(1) + " mm";
             document.getElementById('pack_c').innerText = c.toFixed(1) + " mm";
+            
+            // アラートの表示
+            document.getElementById('pack_physics_alert').classList.add('active');
+            document.getElementById('pack_c_limit').innerText = c_limit.toFixed(2) + " mm";
         }
 
         function calculateConePacking() {
             const a0 = parseFloat(document.getElementById('cp_a0').value), b0 = parseFloat(document.getElementById('cp_b0').value), h0h = parseFloat(document.getElementById('cp_h0_hole').value), c0h = parseFloat(document.getElementById('cp_c0_hole').value), a = parseFloat(document.getElementById('cp_a').value), b = parseFloat(document.getElementById('cp_b').value), h = parseFloat(document.getElementById('cp_h').value), c = parseFloat(document.getElementById('cp_c').value), d0 = parseFloat(document.getElementById('cp_d0').value), L = parseFloat(document.getElementById('cp_L').value), t = parseFloat(document.getElementById('cp_t_total').value);
             if ([a0,b0,h0h,c0h,a,b,h,c,d0,L,t].some(isNaN)) return;
+            
             const Vb = (Math.PI/4)*a*a*h + (Math.PI/12)*c*(a*a+a*b+b*b) - (Math.PI/4)*b*b*(h+c);
             const V20 = (Math.PI/12)*c0h*(a0*a0+a0*b0+b0*b0);
             const h1 = (Vb - V20 + (Math.PI/4)*d0*d0*c0h) / ((Math.PI/4)*(a0*a0-d0*d0)) + c0h;
-            const h2 = h1 * 0.95, c_res = (h2 + L + t) - (h0h + c0h);
+            const h2 = h1 * 0.95;
+            const c_res = (h2 + L + t) - (h0h + c0h);
+            const c_limit = (h1 + L + t) - (h0h + c0h); // 物理限界スキ（h1ベース）
+
             document.getElementById('cp_vb').innerText = Vb.toFixed(0) + " mm³";
             document.getElementById('cp_h_prime').innerText = h1.toFixed(2) + " mm";
             document.getElementById('cp_h_double').innerText = h2.toFixed(2) + " mm";
             document.getElementById('cp_c_final').innerText = c_res.toFixed(2) + " mm";
+
+            // アラートの表示
+            document.getElementById('cp_physics_alert').classList.add('active');
+            document.getElementById('cp_c_limit').innerText = c_limit.toFixed(2) + " mm";
         }
 
         function calculateCyl() {
             const a0 = parseFloat(document.getElementById('cyl_a0').value), D = parseFloat(document.getElementById('cyl_D').value), d0 = parseFloat(document.getElementById('cyl_d0').value), a = parseFloat(document.getElementById('cyl_a').value), b = parseFloat(document.getElementById('cyl_b').value), h = parseFloat(document.getElementById('cyl_h').value), L = parseFloat(document.getElementById('cyl_L').value), t = parseFloat(document.getElementById('cyl_t').value);
             if ([a0,D,d0,a,b,h,L,t].some(isNaN)) return;
-            const h1 = ((a*a - b*b) / (a0*a0 - d0*d0)) * h, h2 = h1 * 0.95, c = (h2 + L + t) - D;
+            
+            const h1 = ((a*a - b*b) / (a0*a0 - d0*d0)) * h;
+            const h2 = h1 * 0.95;
+            const c = (h2 + L + t) - D;
+            const c_limit = (h1 + L + t) - D; // 物理限界スキ（h1ベース）
+
             document.getElementById('cyl_h0_res').innerText = h1.toFixed(2) + " mm";
             document.getElementById('cyl_h5_res').innerText = h2.toFixed(2) + " mm";
             document.getElementById('cyl_c_5').innerText = c.toFixed(2) + " mm";
+
+            // アラートの表示
+            document.getElementById('cyl_physics_alert').classList.add('active');
+            document.getElementById('cyl_c_limit').innerText = c_limit.toFixed(2) + " mm";
         }
 
         // 初期ロード時の計算実行
