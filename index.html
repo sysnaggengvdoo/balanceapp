@@ -41,7 +41,7 @@
         
         .input-section-title { font-size: 12px; color: #fff; background: #7f8c8d; padding: 4px 8px; border-radius: 4px; margin: 15px 0 10px 0; display: inline-block; font-weight: bold; }
 
-        .result-box { margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; }
+        .result-box { margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; transition: background-color 0.3s; }
         .result-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .result-item:last-child { margin-bottom: 0; }
         .result-label { color: #555; font-size: 13px; font-weight: bold; }
@@ -57,9 +57,6 @@
 
         .status-ok { color: #2ecc71; }
         .status-ng { color: #e74c3c; }
-        #bal-result-area { margin-top: 20px; padding: 15px; border-radius: 8px; text-align: center; display: none; color: #fff; }
-        .bal-result-title { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
-        .bal-result-detail { font-size: 14px; margin: 4px 0; }
         
         .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .grid-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
@@ -68,15 +65,15 @@
 <body>
 
     <div class="tab-container">
-        <button class="tab-button active" onclick="showTab('app-resistance', this)">巻線抵抗</button>
-        <button class="tab-button" onclick="showTab('app-balance', this)">バランス（開発中）</button>
+        <button class="tab-button" onclick="showTab('app-resistance', this)">巻線抵抗</button>
+        <button class="tab-button active" onclick="showTab('app-balance', this)">✖（開発中）コロ受け安全率</button>
         <button class="tab-button" onclick="showTab('app-impulse', this)">Rインパルス</button>
         <button class="tab-button" onclick="showTab('app-packing', this)">端子台(多孔)</button>
         <button class="tab-button" onclick="showTab('app-cone-packing', this)">端子台(円錐)</button>
         <button class="tab-button" onclick="showTab('app-cyl-packing', this)">端子台(円柱)</button>
     </div>
 
-    <div id="app-resistance" class="app-section active">
+    <div id="app-resistance" class="app-section">
         <div class="card">
             <h2 class="card-title">巻線抵抗アンバランス計算</h2>
             <div class="form-group"><label>U-V (R1) [Ω]</label><input type="number" id="r1" step="0.0001" oninput="calculateResistance()"></div>
@@ -92,24 +89,42 @@
         </div>
     </div>
 
-    <div id="app-balance" class="app-section">
+    <div id="app-balance" class="app-section active">
         <div class="card">
-            <h2 class="card-title">バランスマシン安全率判定（開発中まだ使えません）</h2>
-            <div class="form-group"><label>ローター総重量 (kg)</label><input type="number" id="weight" placeholder="例: 200"></div>
-            <div class="form-group"><label>シャフト径 / 軸受部 (mm)</label><input type="number" id="diameter" placeholder="例: 60"></div>
-            <div class="form-group"><label>表面状態</label>
-                <select id="surface">
-                    <option value="coating">13Cr溶射皮膜あり</option>
-                    <option value="bare">母材そのまま</option>
-                    <option value="collar">保護カラー装着済み</option>
-                </select>
+            <h2 class="card-title">コロ受け溶射被膜リスク計算</h2>
+            <img src="コロ受け.png" alt="コロ受け図" class="diagram-img">
+            
+            <div class="input-section-title">ローター荷重・密着強度</div>
+            <div class="grid-2col">
+                <div class="form-group"><label>総重量 (kg)</label><input type="number" id="bal_weight" value="1500" oninput="calculateBalance()"></div>
+                <div class="form-group"><label>直結側 荷重配分 (%)</label><input type="number" id="bal_de_ratio" value="55" oninput="calculateBalance()"></div>
+                <div class="form-group"><label>カップリング荷重 (kg)</label><input type="number" id="bal_cup_load" value="50" oninput="calculateBalance()"></div>
+                <div class="form-group"><label>密着強度 (MPa)</label><input type="number" id="bal_adhesion" value="35" oninput="calculateBalance()"></div>
             </div>
-            <button class="btn-primary" onclick="calculateSafety()">判定する</button>
-            <div id="bal-result-area">
-                <div class="bal-result-title" id="judgement"></div>
-                <div class="bal-result-detail" id="sf-display"></div>
-                <div class="bal-result-detail" id="stress-display"></div>
-                <div class="bal-result-detail" id="advice" style="margin-top:10px; font-weight:bold;"></div>
+
+            <div class="input-section-title">シャフト・コロ寸法</div>
+            <div class="grid-2col">
+                <div class="form-group"><label>直結側(DS) 軸径 (mm)</label><input type="number" id="bal_dia_de" value="160" oninput="calculateBalance()"></div>
+                <div class="form-group"><label>反直結(AS) 軸径 (mm)</label><input type="number" id="bal_dia_nde" value="160" oninput="calculateBalance()"></div>
+                <div class="form-group"><label>コロ径 (mm)</label><input type="number" id="bal_roller_dia" value="110" oninput="calculateBalance()"></div>
+                <div class="form-group"><label>コロ接触幅 (mm/1つ)</label><input type="number" id="bal_roller_w" value="20" oninput="calculateBalance()"></div>
+                <div class="form-group"><label>コロ支持角度 (度)</label><input type="number" id="bal_angle" value="30" oninput="calculateBalance()"></div>
+            </div>
+
+            <div class="result-box" id="bal_card_de">
+                <div class="input-section-title" style="background:#2c3e50; margin-top:0;">直結側 (DS) 判定</div>
+                <div class="result-item"><span class="result-label">最大接触応力:</span> <span id="bal_stress_de" class="result-value">-</span></div>
+                <div class="result-item"><span class="result-label">安全率 (SF):</span> <span id="bal_sf_de" class="result-value">-</span></div>
+                <hr>
+                <div class="result-item"><span class="result-label">リスク判定:</span> <span id="bal_judge_de" class="result-value" style="font-size:18px;">-</span></div>
+            </div>
+
+            <div class="result-box" id="bal_card_nde">
+                <div class="input-section-title" style="background:#7f8c8d; margin-top:0;">反直結側 (AS) 判定</div>
+                <div class="result-item"><span class="result-label">最大接触応力:</span> <span id="bal_stress_nde" class="result-value">-</span></div>
+                <div class="result-item"><span class="result-label">安全率 (SF):</span> <span id="bal_sf_nde" class="result-value">-</span></div>
+                <hr>
+                <div class="result-item"><span class="result-label">リスク判定:</span> <span id="bal_judge_nde" class="result-value" style="font-size:18px;">-</span></div>
             </div>
         </div>
     </div>
@@ -224,6 +239,9 @@
             btn.classList.add('active');
         }
 
+        // ============================
+        // 巻線抵抗 計算
+        // ============================
         function calculateResistance() {
             const r1 = parseFloat(document.getElementById('r1').value), r2 = parseFloat(document.getElementById('r2').value), r3 = parseFloat(document.getElementById('r3').value);
             const elRm = document.getElementById('rm'), elImbP = document.getElementById('imbPlus'), elImbM = document.getElementById('imbMinus'), elJ2 = document.getElementById('judge2'), elJ1 = document.getElementById('judge1');
@@ -235,22 +253,73 @@
             elJ1.innerText = maxImb <= 1 ? "正常" : "異常"; elJ1.className = maxImb <= 1 ? "result-value status-ok" : "result-value status-ng";
         }
 
-        function calculateSafety() {
-            const weight = parseFloat(document.getElementById('weight').value), diameter = parseFloat(document.getElementById('diameter').value), surface = document.getElementById('surface').value;
-            if (!weight || !diameter) return;
-            if (surface === 'collar') { showBalRes("#2ecc71", "✅ そのまま作業OK", "SF: 50+", "約 5 MPa", "カラーが有効です。"); return; }
-            const P = (weight * 9.8 / 2) / Math.cos(0.785), Req = ((diameter / 2) * 55) / ((diameter / 2) + 55), Estar = 115384;
-            const pmax = (2 * P) / (Math.PI * Math.sqrt((4 * P * Req) / (Math.PI * 20 * Estar)) * 20), tau = 0.30 * pmax;
-            let SF = (surface === 'coating' ? 30 : 250) / tau;
-            if (SF >= 1.5) showBalRes("#2ecc71", "✅ 正常", `SF: ${SF.toFixed(2)}`, `${tau.toFixed(0)} MPa`, "安全です。");
-            else if (SF >= 1.0) showBalRes("#f39c12", "⚠️ 注意", `SF: ${SF.toFixed(2)}`, `${tau.toFixed(0)} MPa`, "衝撃に注意。");
-            else showBalRes("#e74c3c", "❌ 中止", `SF: ${SF.toFixed(2)}`, `${tau.toFixed(0)} MPa`, "カラー必須。");
-        }
-        function showBalRes(c, j, sf, st, ad) {
-            const r = document.getElementById('bal-result-area'); r.style.display = "block"; r.style.backgroundColor = c;
-            document.getElementById('judgement').innerText = j; document.getElementById('sf-display').innerText = sf; document.getElementById('stress-display').innerText = st; document.getElementById('advice').innerText = ad;
+        // ============================
+        // バランスマシン 皮膜剥離リスク計算
+        // ============================
+        function calculateBalance() {
+            const w = parseFloat(document.getElementById('bal_weight').value);
+            const de_ratio = parseFloat(document.getElementById('bal_de_ratio').value);
+            const cup = parseFloat(document.getElementById('bal_cup_load').value);
+            const dia_de = parseFloat(document.getElementById('bal_dia_de').value);
+            const dia_nde = parseFloat(document.getElementById('bal_dia_nde').value);
+            const r_dia = parseFloat(document.getElementById('bal_roller_dia').value);
+            const r_w = parseFloat(document.getElementById('bal_roller_w').value);
+            const angle = parseFloat(document.getElementById('bal_angle').value);
+            const adhesion = parseFloat(document.getElementById('bal_adhesion').value);
+
+            if ([w, de_ratio, cup, dia_de, dia_nde, r_dia, r_w, angle, adhesion].some(isNaN)) return;
+
+            const Estar = 113186; // 合成縦弾性係数 (MPa)
+            const g = 9.81;
+
+            // 直結側 (DE) の計算
+            const w_de = w * (de_ratio / 100) + cup; // 荷重配分 + カップリング荷重
+            const F_de = (w_de * g) / (2 * Math.cos(angle * Math.PI / 180)); // 2つのコロによる分散
+            const R_eq_de = ((dia_de / 2) * (r_dia / 2)) / ((dia_de / 2) + (r_dia / 2)); // 等価半径
+            const stress_de = Math.sqrt((F_de * Estar) / (Math.PI * r_w * R_eq_de)); // 最大接触応力
+            const sf_de = adhesion / stress_de; // 安全率
+
+            // 反直結側 (NDE) の計算
+            const w_nde = w * (100 - de_ratio) / 100;
+            const F_nde = (w_nde * g) / (2 * Math.cos(angle * Math.PI / 180));
+            const R_eq_nde = ((dia_nde / 2) * (r_dia / 2)) / ((dia_nde / 2) + (r_dia / 2));
+            const stress_nde = Math.sqrt((F_nde * Estar) / (Math.PI * r_w * R_eq_nde));
+            const sf_nde = adhesion / stress_nde;
+
+            // UI更新
+            updateBalUI('de', stress_de, sf_de);
+            updateBalUI('nde', stress_nde, sf_nde);
         }
 
+        function updateBalUI(side, stress, sf) {
+            document.getElementById(`bal_stress_${side}`).innerText = stress.toFixed(1) + " MPa";
+            const sfEl = document.getElementById(`bal_sf_${side}`);
+            sfEl.innerText = sf.toFixed(2);
+            
+            const cardEl = document.getElementById(`bal_card_${side}`);
+            const judgeEl = document.getElementById(`bal_judge_${side}`);
+            
+            if (sf < 1.0) {
+                sfEl.style.color = "#e74c3c";
+                cardEl.style.backgroundColor = "#fadbd8";
+                judgeEl.innerText = "剥離リスク大";
+                judgeEl.style.color = "#e74c3c";
+            } else if (sf < 1.5) {
+                sfEl.style.color = "#f39c12";
+                cardEl.style.backgroundColor = "#fef5e7";
+                judgeEl.innerText = "注意（片当たり厳禁）";
+                judgeEl.style.color = "#d35400";
+            } else {
+                sfEl.style.color = "#2ecc71";
+                cardEl.style.backgroundColor = "#e8f5e9";
+                judgeEl.innerText = "安全圏";
+                judgeEl.style.color = "#27ae60";
+            }
+        }
+
+        // ============================
+        // インパルス / パッキン類 計算
+        // ============================
         function calculateImpulse() {
             const e2 = parseFloat(document.getElementById('e2').value); if (isNaN(e2)) return;
             const rew = (2 * e2 + 1000) * 1.414 * 1.25;
@@ -289,7 +358,13 @@
             document.getElementById('cyl_h5_res').innerText = h2.toFixed(2) + " mm";
             document.getElementById('cyl_c_5').innerText = c.toFixed(2) + " mm";
         }
-        calculateImpulse(); calculatePacking(); calculateConePacking(); calculateCyl();
+
+        // 初期ロード時の計算実行
+        calculateBalance();
+        calculateImpulse(); 
+        calculatePacking(); 
+        calculateConePacking(); 
+        calculateCyl();
     </script>
 </body>
 </html>
