@@ -19,11 +19,9 @@
         .app-section.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* カードの枠組み */
         .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 25px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box; }
         .card-title { font-size: 18px; text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-weight: bold; }
 
-        /* 図解画像用のスタイル */
         .diagram-img {
             width: 100%;
             max-width: 320px;
@@ -36,16 +34,13 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* 入力フォーム共通 */
         .form-group { margin-bottom: 12px; text-align: left; }
         .form-group label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 12px; color: #555; }
         .form-group input, .form-group select { width: 100%; padding: 10px; font-size: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
         .form-group input:focus { border-color: #3498db; outline: none; box-shadow: 0 0 0 3px rgba(52,152,219,0.2); }
         
-        /* 入力グループの仕切り */
         .input-section-title { font-size: 12px; color: #fff; background: #7f8c8d; padding: 4px 8px; border-radius: 4px; margin: 15px 0 10px 0; display: inline-block; font-weight: bold; }
 
-        /* 結果表示エリア共通 */
         .result-box { margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; }
         .result-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .result-item:last-child { margin-bottom: 0; }
@@ -53,7 +48,6 @@
         .result-value { font-weight: bold; font-family: monospace; font-size: 16px; color: #2c3e50; }
         hr { border: 0; border-top: 1px solid #dee2e6; margin: 10px 0; }
 
-        /* 目立たせる結果用 */
         .highlight-result { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 8px; margin-top: 15px; }
         .highlight-result .result-label { color: #2e7d32; font-size: 15px; }
         .highlight-result .result-value { color: #1b5e20; font-size: 24px; }
@@ -67,7 +61,6 @@
         .bal-result-title { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
         .bal-result-detail { font-size: 14px; margin: 4px 0; }
         
-        /* カラムレイアウト */
         .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .grid-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
     </style>
@@ -79,8 +72,8 @@
         <button class="tab-button" onclick="showTab('app-balance', this)">バランス</button>
         <button class="tab-button" onclick="showTab('app-impulse', this)">インパルス</button>
         <button class="tab-button" onclick="showTab('app-packing', this)">端子台(多孔)</button>
-        <button class="tab-button" onclick="showTab('app-cone-packing', this)">端子台(円錐)</button>
-        <button class="tab-button active" onclick="showTab('app-cyl-packing', this)">端子台(円柱)</button>
+        <button class="tab-button active" onclick="showTab('app-cone-packing', this)">端子台(円錐)</button>
+        <button class="tab-button" onclick="showTab('app-cyl-packing', this)">端子台(円柱)</button>
     </div>
 
     <div id="app-resistance" class="app-section">
@@ -93,8 +86,7 @@
                 <div class="result-item"><span class="result-label">平均値 (Rm):</span> <span id="rm" class="result-value">-</span></div>
                 <div class="result-item"><span class="result-label">不平衡率 (+%):</span> <span id="imbPlus" class="result-value">-</span></div>
                 <div class="result-item"><span class="result-label">不平衡率 (-%):</span> <span id="imbMinus" class="result-value">-</span></div>
-                <hr>
-                <div class="result-item"><span class="result-label">乱巻判定 (±2%):</span> <span id="judge2" class="result-value">-</span></div>
+                <hr><div class="result-item"><span class="result-label">乱巻判定 (±2%):</span> <span id="judge2" class="result-value">-</span></div>
                 <div class="result-item"><span class="result-label">型巻判定 (±1%):</span> <span id="judge1" class="result-value">-</span></div>
             </div>
         </div>
@@ -105,10 +97,10 @@
             <h2 class="card-title">バランサー安全率判定</h2>
             <div class="form-group"><label>ローター総重量 (kg)</label><input type="number" id="weight" placeholder="例: 2200"></div>
             <div class="form-group"><label>シャフト径 / 軸受部 (mm)</label><input type="number" id="diameter" placeholder="例: 160"></div>
-            <div class="form-group"><label>表面状態 (接触部)</label>
+            <div class="form-group"><label>表面状態</label>
                 <select id="surface">
-                    <option value="coating">13Cr溶射皮膜あり（限界: 30MPa）</option>
-                    <option value="bare">母材そのまま（限界: 250MPa）</option>
+                    <option value="coating">13Cr溶射皮膜あり</option>
+                    <option value="bare">母材そのまま</option>
                     <option value="collar">保護カラー装着済み</option>
                 </select>
             </div>
@@ -125,10 +117,7 @@
     <div id="app-impulse" class="app-section">
         <div class="card">
             <h2 class="card-title">インパルス試験電圧</h2>
-            <div class="form-group">
-                <label>二次電圧 (E2) [V]</label>
-                <input type="number" id="e2" value="250" oninput="calculateImpulse()">
-            </div>
+            <div class="form-group"><label>二次電圧 (E2) [V]</label><input type="number" id="e2" value="250" oninput="calculateImpulse()"></div>
             <div class="result-box">
                 <div class="result-item"><span class="result-label">巻替 試験電圧</span> <span id="rewindResult" class="result-value">-</span></div><hr>
                 <div class="result-item"><span class="result-label">白コイル 試験電圧</span> <span id="whiteResult" class="result-value">-</span></div><hr>
@@ -140,229 +129,166 @@
     <div id="app-packing" class="app-section">
         <div class="card">
             <h2 class="card-title">多孔形パッキン式 端子台締付</h2>
-            
-            <img src="多孔形.png" alt="多孔形パッキンの図解" class="diagram-img">
-
+            <img src="多孔形.png" alt="図解" class="diagram-img">
             <div class="input-section-title">ケーブル情報</div>
             <div class="grid-2col">
                 <div class="form-group"><label>外径 d (mm)</label><input type="number" id="pack_d" value="7" oninput="calculatePacking()"></div>
                 <div class="form-group"><label>本数 n (本)</label><input type="number" id="pack_n" value="6" oninput="calculatePacking()"></div>
             </div>
-
-            <div class="input-section-title">パッキン情報</div>
+            <div class="input-section-title">パッキン・端子台情報</div>
             <div class="grid-2col">
-                <div class="form-group"><label>外径 a (mm)</label><input type="number" id="pack_a" value="39.5" oninput="calculatePacking()"></div>
-                <div class="form-group"><label>内径 b (mm)</label><input type="number" id="pack_b" value="7.5" oninput="calculatePacking()"></div>
+                <div class="form-group"><label>外径 a</label><input type="number" id="pack_a" value="39.5" oninput="calculatePacking()"></div>
+                <div class="form-group"><label>内径 b</label><input type="number" id="pack_b" value="7.5" oninput="calculatePacking()"></div>
+                <div class="form-group"><label>初期長 h0</label><input type="number" id="pack_h0" value="10" oninput="calculatePacking()"></div>
+                <div class="form-group"><label>穴内径 a0</label><input type="number" id="pack_a0" value="40" oninput="calculatePacking()"></div>
+                <div class="form-group"><label>深さ D</label><input type="number" id="pack_D" value="18" oninput="calculatePacking()"></div>
+                <div class="form-group"><label>首下 L</label><input type="number" id="pack_L" value="12" oninput="calculatePacking()"></div>
+                <div class="form-group"><label>座金合計厚 t</label><input type="number" id="pack_t_total" value="4.6" oninput="calculatePacking()"></div>
             </div>
-            <div class="form-group"><label>初期長さ h0 (mm)</label><input type="number" id="pack_h0" value="10" oninput="calculatePacking()"></div>
-
-            <div class="input-section-title">端子台・金具情報</div>
-            <div class="grid-2col">
-                <div class="form-group"><label>穴内径 a0 (mm)</label><input type="number" id="pack_a0" value="40" oninput="calculatePacking()"></div>
-                <div class="form-group"><label>穴深さ D (mm)</label><input type="number" id="pack_D" value="18" oninput="calculatePacking()"></div>
-                <div class="form-group"><label>首下長さ L (mm)</label><input type="number" id="pack_L" value="12" oninput="calculatePacking()"></div>
-                <div class="form-group"><label>座金合計厚 t (mm)</label><input type="number" id="pack_t_total" value="4.6" oninput="calculatePacking()"></div>
+            <div class="result-box">
+                <div class="result-item"><span class="result-label">接触時パッキン長 (h')</span> <span id="pack_h_prime" class="result-value">-</span></div>
+                <hr>
+                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後パッキン長 (h'')</span> <span id="pack_h_double" class="result-value" style="color:#d35400;">-</span></div>
             </div>
-
             <div class="highlight-result">
-                <div class="result-item" style="margin-bottom:0;">
-                    <span class="result-label">5%締め後のスキ (C)</span> 
-                    <span id="pack_c" class="result-value">-</span>
-                </div>
+                <div class="result-item" style="margin-bottom:0;"><span class="result-label">5%締め後のスキ (C)</span> <span id="pack_c" class="result-value">-</span></div>
             </div>
         </div>
     </div>
 
-    <div id="app-cone-packing" class="app-section">
+    <div id="app-cone-packing" class="app-section active">
         <div class="card">
             <h2 class="card-title">円錐パッキン式 端子台締付</h2>
-            
-            <img src="円錐.png" alt="円錐パッキンの図解" class="diagram-img">
-
-            <div class="input-section-title">端子台（受け側）情報</div>
+            <img src="円錐.png" alt="図解" class="diagram-img">
+            <div class="input-section-title">端子台・ブッシング情報</div>
             <div class="grid-3col">
                 <div class="form-group"><label>上部穴 a0</label><input type="number" id="cp_a0" value="20.4" oninput="calculateConePacking()"></div>
                 <div class="form-group"><label>下部穴 b0</label><input type="number" id="cp_b0" value="19.6" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円柱深さ h0</label><input type="number" id="cp_h0_hole" value="12" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円錐深さ c0</label><input type="number" id="cp_c0_hole" value="6" oninput="calculateConePacking()"></div>
-            </div>
-
-            <div class="input-section-title">ブッシング（ゴム）情報</div>
-            <div class="grid-3col">
-                <div class="form-group"><label>外径 a</label><input type="number" id="cp_a" value="23.5" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>内径 b</label><input type="number" id="cp_b" value="11.5" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円柱深 h0</label><input type="number" id="cp_h0_hole" value="12" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円錐深 c0</label><input type="number" id="cp_c0_hole" value="6" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>ゴム外径 a</label><input type="number" id="cp_a" value="23.5" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>ゴム内径 b</label><input type="number" id="cp_b" value="11.5" oninput="calculateConePacking()"></div>
                 <div class="form-group"><label>円柱高 h</label><input type="number" id="cp_h" value="12" oninput="calculateConePacking()"></div>
                 <div class="form-group"><label>円錐高 c</label><input type="number" id="cp_c" value="5.76" oninput="calculateConePacking()"></div>
-            </div>
-
-            <div class="input-section-title">その他（ケーブル・金具）</div>
-            <div class="grid-3col">
                 <div class="form-group"><label>線径 d0</label><input type="number" id="cp_d0" value="11.3" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>首下長 L</label><input type="number" id="cp_L" value="5.00" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>座金合計厚</label><input type="number" id="cp_t_total" value="1.60" oninput="calculateConePacking()"></div>
             </div>
-
+            <div class="grid-2col">
+                <div class="form-group"><label>首下 L</label><input type="number" id="cp_L" value="5.00" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>座金合計厚 t</label><input type="number" id="cp_t_total" value="1.60" oninput="calculateConePacking()"></div>
+            </div>
+            <div class="result-box">
+                <div class="result-item"><span class="result-label">初期体積 (Vb)</span> <span id="cp_vb" class="result-value">-</span></div>
+                <div class="result-item"><span class="result-label">接触時ゴム高さ (h')</span> <span id="cp_h_prime" class="result-value">-</span></div>
+                <hr>
+                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後ゴム高さ (h'')</span> <span id="cp_h_double" class="result-value" style="color:#d35400;">-</span></div>
+            </div>
             <div class="highlight-result">
-                <div class="result-item" style="margin-bottom:0;">
-                    <span class="result-label">5%締め後のスキ</span> 
-                    <span id="cp_c_final" class="result-value">-</span>
-                </div>
+                <div class="result-item" style="margin-bottom:0;"><span class="result-label">有効圧縮率5%のスキ (C)</span> <span id="cp_c_final" class="result-value">-</span></div>
             </div>
         </div>
     </div>
 
-    <div id="app-cyl-packing" class="app-section active">
+    <div id="app-cyl-packing" class="app-section">
         <div class="card">
             <h2 class="card-title">円柱パッキン式 端子台締付</h2>
-
-            <img src="円柱.png" alt="円柱パッキンの図解" class="diagram-img">
-
-            <div class="input-section-title">端子台・ケーブル情報</div>
+            <img src="円柱.png" alt="図解" class="diagram-img">
+            <div class="input-section-title">基本情報</div>
             <div class="grid-3col">
                 <div class="form-group"><label>穴径 a0</label><input type="number" id="cyl_a0" value="20.4" oninput="calculateCyl()"></div>
                 <div class="form-group"><label>穴深さ D</label><input type="number" id="cyl_D" value="17.8" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>リード外径 d0</label><input type="number" id="cyl_d0" value="11.0" oninput="calculateCyl()"></div>
-            </div>
-
-            <div class="input-section-title">ブッシング（ゴム）情報</div>
-            <div class="grid-3col">
-                <div class="form-group"><label>外径 a</label><input type="number" id="cyl_a" value="20.3" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>内径 b</label><input type="number" id="cyl_b" value="11.1" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>リード d0</label><input type="number" id="cyl_d0" value="11.0" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>ゴム外径 a</label><input type="number" id="cyl_a" value="20.3" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>ゴム内径 b</label><input type="number" id="cyl_b" value="11.1" oninput="calculateCyl()"></div>
                 <div class="form-group"><label>高さ h</label><input type="number" id="cyl_h" value="13.8" oninput="calculateCyl()"></div>
             </div>
-
-            <div class="input-section-title">金具情報</div>
             <div class="grid-2col">
-                <div class="form-group"><label>首下長 L</label><input type="number" id="cyl_L" value="5.0" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>首下 L</label><input type="number" id="cyl_L" value="5.0" oninput="calculateCyl()"></div>
                 <div class="form-group"><label>座金合計厚 t</label><input type="number" id="cyl_t" value="0" oninput="calculateCyl()"></div>
             </div>
-
             <div class="result-box">
-                <div class="result-item"><span class="result-label">初期体積 (Vb)</span> <span id="cyl_vb" class="result-value">-</span></div>
+                <div class="result-item"><span class="result-label">接触時ゴム高さ (h')</span> <span id="cyl_h0_res" class="result-value">-</span></div>
                 <hr>
-                <div class="result-item"><span class="result-label">圧縮ナシ時のスキ</span> <span id="cyl_c_init" class="result-value">-</span></div>
-                <div class="result-item"><span class="result-label">接触時(0%)のスキ</span> <span id="cyl_c_0" class="result-value">-</span></div>
+                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後ゴム高さ (h'')</span> <span id="cyl_h5_res" class="result-value" style="color:#d35400;">-</span></div>
             </div>
-
             <div class="highlight-result">
-                <div class="result-item" style="margin-bottom:0;">
-                    <span class="result-label">5%締め後のスキ (C)</span>
-                    <span id="cyl_c_5" class="result-value">-</span>
-                </div>
+                <div class="result-item" style="margin-bottom:0;"><span class="result-label">5%締め後のスキ (C)</span> <span id="cyl_c_5" class="result-value">-</span></div>
             </div>
         </div>
     </div>
 
     <script>
         function showTab(tabId, btn) {
-            document.querySelectorAll('.app-section').forEach(section => section.classList.remove('active'));
-            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+            document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
         }
 
-        // ① 巻線抵抗
         function calculateResistance() {
             const r1 = parseFloat(document.getElementById('r1').value), r2 = parseFloat(document.getElementById('r2').value), r3 = parseFloat(document.getElementById('r3').value);
-            const elRm = document.getElementById('rm'), elImbPlus = document.getElementById('imbPlus'), elImbMinus = document.getElementById('imbMinus'), elJ2 = document.getElementById('judge2'), elJ1 = document.getElementById('judge1');
-            if (isNaN(r1) || isNaN(r2) || isNaN(r3)) { elRm.innerText = "-"; elImbPlus.innerText = "-"; elImbMinus.innerText = "-"; return; }
-            const rm = (r1 + r2 + r3) / 3, maxVal = Math.max(r1, r2, r3), minVal = Math.min(r1, r2, r3);
-            const imbPlus = ((maxVal - rm) / rm) * 100, imbMinus = ((rm - minVal) / rm) * 100, maxImb = Math.max(imbPlus, imbMinus);
-            elRm.innerText = rm.toFixed(4) + " Ω"; elImbPlus.innerText = imbPlus.toFixed(5) + " %"; elImbMinus.innerText = imbMinus.toFixed(5) + " %";
+            const elRm = document.getElementById('rm'), elImbP = document.getElementById('imbPlus'), elImbM = document.getElementById('imbMinus'), elJ2 = document.getElementById('judge2'), elJ1 = document.getElementById('judge1');
+            if (isNaN(r1) || isNaN(r2) || isNaN(r3)) return;
+            const rm = (r1 + r2 + r3) / 3, max = Math.max(r1, r2, r3), min = Math.min(r1, r2, r3);
+            const imbP = ((max - rm) / rm) * 100, imbM = ((rm - min) / rm) * 100, maxImb = Math.max(imbP, imbM);
+            elRm.innerText = rm.toFixed(4) + " Ω"; elImbP.innerText = imbP.toFixed(5) + " %"; elImbM.innerText = imbM.toFixed(5) + " %";
             elJ2.innerText = maxImb <= 2 ? "正常" : "異常"; elJ2.className = maxImb <= 2 ? "result-value status-ok" : "result-value status-ng";
             elJ1.innerText = maxImb <= 1 ? "正常" : "異常"; elJ1.className = maxImb <= 1 ? "result-value status-ok" : "result-value status-ng";
         }
 
-        // ② バランス
         function calculateSafety() {
             const weight = parseFloat(document.getElementById('weight').value), diameter = parseFloat(document.getElementById('diameter').value), surface = document.getElementById('surface').value;
             if (!weight || !diameter) return;
-            if (surface === 'collar') { showBalanceResult("#2ecc71", "✅ そのまま作業OK", "安全率: 50.0 以上", "発生応力: 約 5 MPa", "カラーによる保護が有効です。"); return; }
-            const P = (weight * 9.8 / 2) / Math.cos(45 * Math.PI / 180), Req = ((diameter / 2) * 55) / ((diameter / 2) + 55), Estar = 210000 / (2 * (1 - 0.09));
-            const p_max = (2 * P) / (Math.PI * Math.sqrt((4 * P * Req) / (Math.PI * 20 * Estar)) * 20), tau_max = 0.30 * p_max;
-            let SF = (surface === 'coating' ? 30 : 250) / tau_max;
-            if (surface === 'coating') {
-                if (SF >= 1.5) showBalanceResult("#2ecc71", "✅ そのまま作業OK", `SF: ${SF.toFixed(2)}`, `応力: ${tau_max.toFixed(0)} MPa`, "皮膜の限界に対して安全です。");
-                else if (SF >= 1.0) showBalanceResult("#f39c12", "⚠️ 要注意", `SF: ${SF.toFixed(2)}`, `応力: ${tau_max.toFixed(0)} MPa`, "衝撃で割れるリスクがあります。");
-                else showBalanceResult("#e74c3c", "❌ 作業中止！", `SF: ${SF.toFixed(2)}`, `応力: ${tau_max.toFixed(0)} MPa`, "皮膜が確実に割れます。");
-            } else {
-                if (SF >= 1.2) showBalanceResult("#2ecc71", "✅ そのまま作業OK", `SF: ${SF.toFixed(2)}`, `応力: ${tau_max.toFixed(0)} MPa`, "母材の限界に対して安全です。");
-                else if (SF >= 1.0) showBalanceResult("#f39c12", "⚠️ 要注意", `SF: ${SF.toFixed(2)}`, `応力: ${tau_max.toFixed(0)} MPa`, "圧痕が残る可能性があります。");
-                else showBalanceResult("#e74c3c", "❌ 作業中止！", `SF: ${SF.toFixed(2)}`, `応力: ${tau_max.toFixed(0)} MPa`, "母材が塑性変形を起こします。");
-            }
+            if (surface === 'collar') { showBalRes("#2ecc71", "✅ そのまま作業OK", "SF: 50+", "約 5 MPa", "カラーが有効です。"); return; }
+            const P = (weight * 9.8 / 2) / Math.cos(0.785), Req = ((diameter / 2) * 55) / ((diameter / 2) + 55), Estar = 115384;
+            const pmax = (2 * P) / (Math.PI * Math.sqrt((4 * P * Req) / (Math.PI * 20 * Estar)) * 20), tau = 0.30 * pmax;
+            let SF = (surface === 'coating' ? 30 : 250) / tau;
+            if (SF >= 1.5) showBalRes("#2ecc71", "✅ 正常", `SF: ${SF.toFixed(2)}`, `${tau.toFixed(0)} MPa`, "安全です。");
+            else if (SF >= 1.0) showBalRes("#f39c12", "⚠️ 注意", `SF: ${SF.toFixed(2)}`, `${tau.toFixed(0)} MPa`, "衝撃に注意。");
+            else showBalRes("#e74c3c", "❌ 中止", `SF: ${SF.toFixed(2)}`, `${tau.toFixed(0)} MPa`, "カラー必須。");
         }
-        function showBalanceResult(color, j, sf, st, adv) {
-            const r = document.getElementById('bal-result-area'); r.style.display = "block"; r.style.backgroundColor = color;
-            document.getElementById('judgement').innerText = j; document.getElementById('sf-display').innerText = sf; document.getElementById('stress-display').innerText = st; document.getElementById('advice').innerText = adv;
+        function showBalRes(c, j, sf, st, ad) {
+            const r = document.getElementById('bal-result-area'); r.style.display = "block"; r.style.backgroundColor = c;
+            document.getElementById('judgement').innerText = j; document.getElementById('sf-display').innerText = sf; document.getElementById('stress-display').innerText = st; document.getElementById('advice').innerText = ad;
         }
 
-        // ③ インパルス
         function calculateImpulse() {
-            const e2 = parseFloat(document.getElementById('e2').value);
-            if (isNaN(e2) || e2 < 0) return;
-            const rewindV = (2 * e2 + 1000) * Math.SQRT2 * 1.25;
-            document.getElementById('rewindResult').innerText = Math.round(rewindV) + ' V';
-            document.getElementById('whiteResult').innerText = Math.round(rewindV * 0.75) + ' V';
-            document.getElementById('ohResult').innerText = Math.round(rewindV * 0.75) + ' V';
+            const e2 = parseFloat(document.getElementById('e2').value); if (isNaN(e2)) return;
+            const rew = (2 * e2 + 1000) * 1.414 * 1.25;
+            document.getElementById('rewindResult').innerText = Math.round(rew) + ' V';
+            document.getElementById('whiteResult').innerText = Math.round(rew * 0.75) + ' V';
+            document.getElementById('ohResult').innerText = Math.round(rew * 0.75) + ' V';
         }
 
-        // ④ 端子台(多孔)
         function calculatePacking() {
-            const d = parseFloat(document.getElementById('pack_d').value), n = parseFloat(document.getElementById('pack_n').value), a0 = parseFloat(document.getElementById('pack_a0').value), D = parseFloat(document.getElementById('pack_D').value), L = parseFloat(document.getElementById('pack_L').value), a = parseFloat(document.getElementById('pack_a').value), b = parseFloat(document.getElementById('pack_b').value), h0 = parseFloat(document.getElementById('pack_h0').value), t_total = parseFloat(document.getElementById('pack_t_total').value);
-            if([d, n, a0, D, L, a, b, h0, t_total].some(isNaN)) return;
-            const h_prime = ((Math.pow(a, 2) - (n * Math.pow(b, 2))) / (Math.pow(a0, 2) - (n * Math.pow(d, 2)))) * h0;
-            const c = (t_total + (h_prime * 0.95) + L) - D;
+            const d = parseFloat(document.getElementById('pack_d').value), n = parseFloat(document.getElementById('pack_n').value), a0 = parseFloat(document.getElementById('pack_a0').value), D = parseFloat(document.getElementById('pack_D').value), L = parseFloat(document.getElementById('pack_L').value), a = parseFloat(document.getElementById('pack_a').value), b = parseFloat(document.getElementById('pack_b').value), h0 = parseFloat(document.getElementById('pack_h0').value), t = parseFloat(document.getElementById('pack_t_total').value);
+            if ([d,n,a0,D,L,a,b,h0,t].some(isNaN)) return;
+            const h1 = ((a*a - n*b*b) / (a0*a0 - n*d*d)) * h0, h2 = h1 * 0.95, c = (t + h2 + L) - D;
+            document.getElementById('pack_h_prime').innerText = h1.toFixed(1) + " mm";
+            document.getElementById('pack_h_double').innerText = h2.toFixed(1) + " mm";
             document.getElementById('pack_c').innerText = c.toFixed(1) + " mm";
         }
 
-        // ⑤ 端子台(円錐)
         function calculateConePacking() {
-            const a0 = parseFloat(document.getElementById('cp_a0').value), b0 = parseFloat(document.getElementById('cp_b0').value), h0_hole = parseFloat(document.getElementById('cp_h0_hole').value), c0_hole = parseFloat(document.getElementById('cp_c0_hole').value), a = parseFloat(document.getElementById('cp_a').value), b = parseFloat(document.getElementById('cp_b').value), h = parseFloat(document.getElementById('cp_h').value), c = parseFloat(document.getElementById('cp_c').value), d0 = parseFloat(document.getElementById('cp_d0').value), L = parseFloat(document.getElementById('cp_L').value), t_total = parseFloat(document.getElementById('cp_t_total').value);
-            if([a0, b0, h0_hole, c0_hole, a, b, h, c, d0, L, t_total].some(isNaN)) return;
-
-            const V1 = (Math.PI / 4) * Math.pow(a, 2) * h;
-            const V2 = (Math.PI / 12) * c * (Math.pow(a, 2) + (a * b) + Math.pow(b, 2));
-            const V3 = (Math.PI / 4) * Math.pow(b, 2) * (h + c);
-            const Vb = V1 + V2 - V3;
-
-            const V20 = (Math.PI / 12) * c0_hole * (Math.pow(a0, 2) + (a0 * b0) + Math.pow(b0, 2));
-            const h_prime_cyl = (Vb - V20 + (Math.PI / 4) * Math.pow(d0, 2) * c0_hole) / ((Math.PI / 4) * (Math.pow(a0, 2) - Math.pow(d0, 2)));
-            const h_prime_total = h_prime_cyl + c0_hole;
-
-            const D_total = h0_hole + c0_hole;
-            const hardware = L + t_total;
-            const c_5percent = (h_prime_total * 0.95) + hardware - D_total;
-            document.getElementById('cp_c_final').innerText = c_5percent.toFixed(2) + " mm";
+            const a0 = parseFloat(document.getElementById('cp_a0').value), b0 = parseFloat(document.getElementById('cp_b0').value), h0h = parseFloat(document.getElementById('cp_h0_hole').value), c0h = parseFloat(document.getElementById('cp_c0_hole').value), a = parseFloat(document.getElementById('cp_a').value), b = parseFloat(document.getElementById('cp_b').value), h = parseFloat(document.getElementById('cp_h').value), c = parseFloat(document.getElementById('cp_c').value), d0 = parseFloat(document.getElementById('cp_d0').value), L = parseFloat(document.getElementById('cp_L').value), t = parseFloat(document.getElementById('cp_t_total').value);
+            if ([a0,b0,h0h,c0h,a,b,h,c,d0,L,t].some(isNaN)) return;
+            const Vb = (Math.PI/4)*a*a*h + (Math.PI/12)*c*(a*a+a*b+b*b) - (Math.PI/4)*b*b*(h+c);
+            const V20 = (Math.PI/12)*c0h*(a0*a0+a0*b0+b0*b0);
+            const h1 = (Vb - V20 + (Math.PI/4)*d0*d0*c0h) / ((Math.PI/4)*(a0*a0-d0*d0)) + c0h;
+            const h2 = h1 * 0.95, c_res = (h2 + L + t) - (h0h + c0h);
+            document.getElementById('cp_vb').innerText = Vb.toFixed(0) + " mm³";
+            document.getElementById('cp_h_prime').innerText = h1.toFixed(2) + " mm";
+            document.getElementById('cp_h_double').innerText = h2.toFixed(2) + " mm";
+            document.getElementById('cp_c_final').innerText = c_res.toFixed(2) + " mm";
         }
 
-        // ⑥ 端子台(円柱)
         function calculateCyl() {
-            const a0 = parseFloat(document.getElementById('cyl_a0').value);
-            const D = parseFloat(document.getElementById('cyl_D').value);
-            const d0 = parseFloat(document.getElementById('cyl_d0').value);
-            const a = parseFloat(document.getElementById('cyl_a').value);
-            const b = parseFloat(document.getElementById('cyl_b').value);
-            const h = parseFloat(document.getElementById('cyl_h').value);
-            const L = parseFloat(document.getElementById('cyl_L').value);
-            const t = parseFloat(document.getElementById('cyl_t').value);
-
-            if ([a0, D, d0, a, b, h, L, t].some(isNaN)) return;
-
-            const Vb = (Math.PI / 4) * (Math.pow(a, 2) - Math.pow(b, 2)) * h;
-            const h0 = Vb / ((Math.PI / 4) * (Math.pow(a0, 2) - Math.pow(d0, 2)));
-            const h5 = h0 * 0.95;
-
-            const c_init = (L + t + h) - D;
-            const c_0 = (L + t + h0) - D;
-            const c_5 = (L + t + h5) - D;
-
-            document.getElementById('cyl_vb').innerText = Vb.toFixed(1) + " mm³";
-            document.getElementById('cyl_c_init').innerText = c_init.toFixed(2) + " mm";
-            document.getElementById('cyl_c_0').innerText = c_0.toFixed(2) + " mm";
-            document.getElementById('cyl_c_5').innerText = c_5.toFixed(2) + " mm";
+            const a0 = parseFloat(document.getElementById('cyl_a0').value), D = parseFloat(document.getElementById('cyl_D').value), d0 = parseFloat(document.getElementById('cyl_d0').value), a = parseFloat(document.getElementById('cyl_a').value), b = parseFloat(document.getElementById('cyl_b').value), h = parseFloat(document.getElementById('cyl_h').value), L = parseFloat(document.getElementById('cyl_L').value), t = parseFloat(document.getElementById('cyl_t').value);
+            if ([a0,D,d0,a,b,h,L,t].some(isNaN)) return;
+            const h1 = ((a*a - b*b) / (a0*a0 - d0*d0)) * h, h2 = h1 * 0.95, c = (h2 + L + t) - D;
+            document.getElementById('cyl_h0_res').innerText = h1.toFixed(2) + " mm";
+            document.getElementById('cyl_h5_res').innerText = h2.toFixed(2) + " mm";
+            document.getElementById('cyl_c_5').innerText = c.toFixed(2) + " mm";
         }
-        
-        // 初期実行
         calculateImpulse(); calculatePacking(); calculateConePacking(); calculateCyl();
     </script>
 </body>
