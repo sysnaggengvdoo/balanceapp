@@ -20,7 +20,11 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 25px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box; }
-        .card-title { font-size: 18px; text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-weight: bold; }
+        .card-title { font-size: 18px; text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; margin-bottom: 15px; font-weight: bold; }
+
+        /* 開発中アラート */
+        .dev-alert { background-color: #e74c3c; color: white; text-align: center; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
 
         .diagram-img {
             width: 100%;
@@ -36,10 +40,10 @@
 
         .form-group { margin-bottom: 12px; text-align: left; }
         .form-group label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 12px; color: #555; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; font-size: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        .form-group input:focus { border-color: #3498db; outline: none; box-shadow: 0 0 0 3px rgba(52,152,219,0.2); }
+        .form-group input, .form-group select { width: 100%; padding: 10px; font-size: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; background-color: #fff; }
+        .form-group input:focus, .form-group select:focus { border-color: #3498db; outline: none; box-shadow: 0 0 0 3px rgba(52,152,219,0.2); }
         
-        .input-section-title { font-size: 12px; color: #fff; background: #7f8c8d; padding: 4px 8px; border-radius: 4px; margin: 15px 0 10px 0; display: inline-block; font-weight: bold; }
+        .input-section-title { font-size: 13px; color: #fff; background: #7f8c8d; padding: 5px 10px; border-radius: 4px; margin: 15px 0 10px 0; display: inline-block; font-weight: bold; }
 
         .result-box { margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; transition: background-color 0.3s; }
         .result-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
@@ -52,13 +56,7 @@
         .highlight-result .result-label { color: #2e7d32; font-size: 15px; }
         .highlight-result .result-value { color: #1b5e20; font-size: 24px; }
 
-        .btn-primary { width: 100%; background-color: #3498db; color: white; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
-        .btn-primary:hover { background-color: #2980b9; }
-
-        .status-ok { color: #2ecc71; }
-        .status-ng { color: #e74c3c; }
-        
-        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .grid-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
     </style>
 </head>
@@ -66,7 +64,7 @@
 
     <div class="tab-container">
         <button class="tab-button" onclick="showTab('app-resistance', this)">巻線抵抗</button>
-        <button class="tab-button active" onclick="showTab('app-balance', this)">✖（開発中）コロ受け安全率</button>
+        <button class="tab-button active" onclick="showTab('app-balance', this)">コロ受け(開発中)</button>
         <button class="tab-button" onclick="showTab('app-impulse', this)">Rインパルス</button>
         <button class="tab-button" onclick="showTab('app-packing', this)">端子台(多孔)</button>
         <button class="tab-button" onclick="showTab('app-cone-packing', this)">端子台(円錐)</button>
@@ -91,40 +89,65 @@
 
     <div id="app-balance" class="app-section active">
         <div class="card">
-            <h2 class="card-title">コロ受け溶射被膜リスク計算</h2>
+            <h2 class="card-title">コロ受け安全率（開発中）</h2>
+            <div class="dev-alert">
+                ⚠️ 【使用禁止】 ⚠️<br>
+                現在開発・テスト中のため、実機の判定には絶対に使用しないでください。
+            </div>
+            
             <img src="コロ受け.png" alt="コロ受け図" class="diagram-img">
             
-            <div class="input-section-title">ローター荷重・密着強度</div>
+            <div class="form-group">
+                <label>ローター総重量 (kg)</label>
+                <input type="number" id="bal_weight" value="1500" placeholder="例: 1500" oninput="calculateBalance()">
+            </div>
+
+            <div class="input-section-title" style="background:#2c3e50;">直結側 (DS) 条件</div>
             <div class="grid-2col">
-                <div class="form-group"><label>総重量 (kg)</label><input type="number" id="bal_weight" value="1500" oninput="calculateBalance()"></div>
-                <div class="form-group"><label>直結側 荷重配分 (%)</label><input type="number" id="bal_de_ratio" value="55" oninput="calculateBalance()"></div>
-                <div class="form-group"><label>カップリング荷重 (kg)</label><input type="number" id="bal_cup_load" value="50" oninput="calculateBalance()"></div>
-                <div class="form-group"><label>密着強度 (MPa)</label><input type="number" id="bal_adhesion" value="35" oninput="calculateBalance()"></div>
+                <div class="form-group"><label>軸受部径 (mm)</label><input type="number" id="bal_dia_ds" value="160" oninput="calculateBalance()"></div>
+                <div class="form-group">
+                    <label>表面状態</label>
+                    <select id="bal_surf_ds" onchange="calculateBalance()">
+                        <option value="35">13Cr溶射皮膜</option>
+                        <option value="150">ハードクロム</option>
+                        <option value="250">炭素鋼（母材）</option>
+                        <option value="0">保護カラー装着</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="input-section-title">シャフト・コロ寸法</div>
+            <div class="input-section-title" style="background:#7f8c8d;">反直結側 (AS) 条件</div>
             <div class="grid-2col">
-                <div class="form-group"><label>直結側(DS) 軸径 (mm)</label><input type="number" id="bal_dia_de" value="160" oninput="calculateBalance()"></div>
-                <div class="form-group"><label>反直結(AS) 軸径 (mm)</label><input type="number" id="bal_dia_nde" value="160" oninput="calculateBalance()"></div>
-                <div class="form-group"><label>コロ径 (mm)</label><input type="number" id="bal_roller_dia" value="110" oninput="calculateBalance()"></div>
-                <div class="form-group"><label>コロ接触幅 (mm/1つ)</label><input type="number" id="bal_roller_w" value="20" oninput="calculateBalance()"></div>
-                <div class="form-group"><label>コロ支持角度 (度)</label><input type="number" id="bal_angle" value="30" oninput="calculateBalance()"></div>
+                <div class="form-group"><label>軸受部径 (mm)</label><input type="number" id="bal_dia_as" value="160" oninput="calculateBalance()"></div>
+                <div class="form-group">
+                    <label>表面状態</label>
+                    <select id="bal_surf_as" onchange="calculateBalance()">
+                        <option value="35">13Cr溶射皮膜</option>
+                        <option value="150">ハードクロム</option>
+                        <option value="250" selected>炭素鋼（母材）</option>
+                        <option value="0">保護カラー装着</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="result-box" id="bal_card_de">
-                <div class="input-section-title" style="background:#2c3e50; margin-top:0;">直結側 (DS) 判定</div>
-                <div class="result-item"><span class="result-label">最大接触応力:</span> <span id="bal_stress_de" class="result-value">-</span></div>
-                <div class="result-item"><span class="result-label">安全率 (SF):</span> <span id="bal_sf_de" class="result-value">-</span></div>
+            <div class="result-box" id="bal_card_ds" style="margin-top:25px;">
+                <div class="result-item" style="justify-content: center; margin-bottom: 10px;">
+                    <span style="font-weight:bold; color:#2c3e50;">【直結側 (DS) 判定】</span>
+                </div>
+                <div class="result-item"><span class="result-label">内部せん断応力:</span> <span id="bal_stress_ds" class="result-value">-</span></div>
+                <div class="result-item"><span class="result-label">安全率 (SF):</span> <span id="bal_sf_ds" class="result-value">-</span></div>
                 <hr>
-                <div class="result-item"><span class="result-label">リスク判定:</span> <span id="bal_judge_de" class="result-value" style="font-size:18px;">-</span></div>
+                <div class="result-item"><span class="result-label">リスク判定:</span> <span id="bal_judge_ds" class="result-value" style="font-size:18px;">-</span></div>
             </div>
 
-            <div class="result-box" id="bal_card_nde">
-                <div class="input-section-title" style="background:#7f8c8d; margin-top:0;">反直結側 (AS) 判定</div>
-                <div class="result-item"><span class="result-label">最大接触応力:</span> <span id="bal_stress_nde" class="result-value">-</span></div>
-                <div class="result-item"><span class="result-label">安全率 (SF):</span> <span id="bal_sf_nde" class="result-value">-</span></div>
+            <div class="result-box" id="bal_card_as">
+                <div class="result-item" style="justify-content: center; margin-bottom: 10px;">
+                    <span style="font-weight:bold; color:#7f8c8d;">【反直結側 (AS) 判定】</span>
+                </div>
+                <div class="result-item"><span class="result-label">内部せん断応力:</span> <span id="bal_stress_as" class="result-value">-</span></div>
+                <div class="result-item"><span class="result-label">安全率 (SF):</span> <span id="bal_sf_as" class="result-value">-</span></div>
                 <hr>
-                <div class="result-item"><span class="result-label">リスク判定:</span> <span id="bal_judge_nde" class="result-value" style="font-size:18px;">-</span></div>
+                <div class="result-item"><span class="result-label">リスク判定:</span> <span id="bal_judge_as" class="result-value" style="font-size:18px;">-</span></div>
             </div>
         </div>
     </div>
@@ -254,65 +277,87 @@
         }
 
         // ============================
-        // バランスマシン 皮膜剥離リスク計算
+        // バランスマシン コロ受け安全率計算 (開発中)
         // ============================
         function calculateBalance() {
             const w = parseFloat(document.getElementById('bal_weight').value);
-            const de_ratio = parseFloat(document.getElementById('bal_de_ratio').value);
-            const cup = parseFloat(document.getElementById('bal_cup_load').value);
-            const dia_de = parseFloat(document.getElementById('bal_dia_de').value);
-            const dia_nde = parseFloat(document.getElementById('bal_dia_nde').value);
-            const r_dia = parseFloat(document.getElementById('bal_roller_dia').value);
-            const r_w = parseFloat(document.getElementById('bal_roller_w').value);
-            const angle = parseFloat(document.getElementById('bal_angle').value);
-            const adhesion = parseFloat(document.getElementById('bal_adhesion').value);
+            const dia_ds = parseFloat(document.getElementById('bal_dia_ds').value);
+            const dia_as = parseFloat(document.getElementById('bal_dia_as').value);
+            const surf_ds = parseFloat(document.getElementById('bal_surf_ds').value);
+            const surf_as = parseFloat(document.getElementById('bal_surf_as').value);
 
-            if ([w, de_ratio, cup, dia_de, dia_nde, r_dia, r_w, angle, adhesion].some(isNaN)) return;
+            if ([w, dia_ds, dia_as, surf_ds, surf_as].some(isNaN)) return;
 
-            const Estar = 113186; // 合成縦弾性係数 (MPa)
+            // --- 裏側で固定する設定値 ---
+            const de_ratio = 50;   // 直結側への荷重配分 (50%)
+            const cup = 0;         // カップリング追加荷重なし
+            const r_dia = 110;     // コロ径 (mm)
+            const r_w = 20;        // コロ接触幅 (mm/1つ)
+            const angle = 45;      // コロ支持角度 (V字90度 = 鉛直から45度)
+            const Estar = 113186;  // 合成縦弾性係数 (MPa)
             const g = 9.81;
 
-            // 直結側 (DE) の計算
-            const w_de = w * (de_ratio / 100) + cup; // 荷重配分 + カップリング荷重
-            const F_de = (w_de * g) / (2 * Math.cos(angle * Math.PI / 180)); // 2つのコロによる分散
-            const R_eq_de = ((dia_de / 2) * (r_dia / 2)) / ((dia_de / 2) + (r_dia / 2)); // 等価半径
-            const stress_de = Math.sqrt((F_de * Estar) / (Math.PI * r_w * R_eq_de)); // 最大接触応力
-            const sf_de = adhesion / stress_de; // 安全率
+            // 直結側 (DS) の計算
+            let stress_ds = 0, sf_ds = 0;
+            if (surf_ds > 0) {
+                const w_ds = w * (de_ratio / 100) + cup;
+                const F_ds = (w_ds * g) / (2 * Math.cos(angle * Math.PI / 180));
+                const R_eq_ds = ((dia_ds / 2) * (r_dia / 2)) / ((dia_ds / 2) + (r_dia / 2));
+                const pmax_ds = Math.sqrt((F_ds * Estar) / (Math.PI * r_w * R_eq_ds)); // 最大接触応力
+                stress_ds = 0.30 * pmax_ds; // 内部の最大せん断応力
+                sf_ds = surf_ds / stress_ds; // 安全率
+            }
 
-            // 反直結側 (NDE) の計算
-            const w_nde = w * (100 - de_ratio) / 100;
-            const F_nde = (w_nde * g) / (2 * Math.cos(angle * Math.PI / 180));
-            const R_eq_nde = ((dia_nde / 2) * (r_dia / 2)) / ((dia_nde / 2) + (r_dia / 2));
-            const stress_nde = Math.sqrt((F_nde * Estar) / (Math.PI * r_w * R_eq_nde));
-            const sf_nde = adhesion / stress_nde;
+            // 反直結側 (AS) の計算
+            let stress_as = 0, sf_as = 0;
+            if (surf_as > 0) {
+                const w_as = w * (100 - de_ratio) / 100;
+                const F_as = (w_as * g) / (2 * Math.cos(angle * Math.PI / 180));
+                const R_eq_as = ((dia_as / 2) * (r_dia / 2)) / ((dia_as / 2) + (r_dia / 2));
+                const pmax_as = Math.sqrt((F_as * Estar) / (Math.PI * r_w * R_eq_as)); // 最大接触応力
+                stress_as = 0.30 * pmax_as; // 内部の最大せん断応力
+                sf_as = surf_as / stress_as; // 安全率
+            }
 
             // UI更新
-            updateBalUI('de', stress_de, sf_de);
-            updateBalUI('nde', stress_nde, sf_nde);
+            updateBalUI('ds', stress_ds, sf_ds, surf_ds);
+            updateBalUI('as', stress_as, sf_as, surf_as);
         }
 
-        function updateBalUI(side, stress, sf) {
-            document.getElementById(`bal_stress_${side}`).innerText = stress.toFixed(1) + " MPa";
+        function updateBalUI(side, stress, sf, surf) {
+            const stressEl = document.getElementById(`bal_stress_${side}`);
             const sfEl = document.getElementById(`bal_sf_${side}`);
-            sfEl.innerText = sf.toFixed(2);
-            
             const cardEl = document.getElementById(`bal_card_${side}`);
             const judgeEl = document.getElementById(`bal_judge_${side}`);
+
+            // 保護カラーが選択されている場合
+            if (surf === 0) {
+                stressEl.innerText = "-";
+                sfEl.innerText = "-";
+                sfEl.style.color = "#2ecc71";
+                cardEl.style.backgroundColor = "#e8f5e9";
+                judgeEl.innerText = "✅ カラー装着（安全）";
+                judgeEl.style.color = "#27ae60";
+                return;
+            }
+
+            stressEl.innerText = stress.toFixed(1) + " MPa";
+            sfEl.innerText = sf.toFixed(2);
             
             if (sf < 1.0) {
                 sfEl.style.color = "#e74c3c";
                 cardEl.style.backgroundColor = "#fadbd8";
-                judgeEl.innerText = "剥離リスク大";
+                judgeEl.innerText = "❌ 剥離リスク大";
                 judgeEl.style.color = "#e74c3c";
             } else if (sf < 1.5) {
                 sfEl.style.color = "#f39c12";
                 cardEl.style.backgroundColor = "#fef5e7";
-                judgeEl.innerText = "注意（片当たり厳禁）";
+                judgeEl.innerText = "⚠️ 注意（片当たり厳禁）";
                 judgeEl.style.color = "#d35400";
             } else {
                 sfEl.style.color = "#2ecc71";
                 cardEl.style.backgroundColor = "#e8f5e9";
-                judgeEl.innerText = "安全圏";
+                judgeEl.innerText = "✅ 安全圏";
                 judgeEl.style.color = "#27ae60";
             }
         }
