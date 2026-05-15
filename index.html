@@ -3,6 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技術計算ツール統合アプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* タブ切り替え用の非表示クラス */
+        .hidden-tab { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-800 font-sans pb-20">
+
+    <!-- ヘッダー -->
+    <header class="bg-gray-800 text-white p-4 shadow-md sticky top-0 z-10">
+        <h1 class="text-lg font-bold text-center">技術計算ツール</h1>
+    </header>
+
+    <!-- メインコンテンツ領域 -->
+    <main class="max-w-md mx-auto mt-4 px-4">
+
+        <!-- ========================================== -->
+        <!-- アプリ1：巻線抵抗（ここに以前のコードを移植） -->
+        <!-- ========================================== -->
+        <section id="app-resistance" class="hidden-tab">
+            <div class="bg-white rounded-2xl shadow border border-gray-100 p-6">
+                <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4">巻線抵抗 計算</h2>
+                <p class="text-gray-500 text-sm mb-4">※ここに巻線抵抗アプリの入力フォームや結果表示を配置します。</p>
+                <!-- 以前の巻線抵抗のHTML要素をここにペースト -->
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- アプリ2：バランス調整（ここに以前のコードを移植） -->
+        <!-- ========================================== -->
+        <section id="app-balance" class="hidden-tab">
+            <div class="bg-white rounded-2xl shadow border border-gray-100 p-6">
+                <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4">バランス調整</h2>
+                <p class="text-gray-500 text-sm mb-4">※ここにバランス調整アプリの入力フォームや結果表示を配置します。</p>
+                <!-- 以前のバランス調整のHTML要素をここにペースト -->
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- アプリ3：インパルス試験電圧（組み込み済み） -->
+        <!-- ========================================== -->
+        <section id="app-impulse">
+            <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
+                <div class="bg-blue-600 p-4 text-white">
+                    <h2 class="text-xl font-bold">インパルス試験電圧計算</h2>
+                    <p class="text-blue-100 text-xs mt-1">回転子コイル用</p>
+                </div>
+                
+                <div class="p-6">
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="e2">二次電圧（E2） [V]</label>
+                        <div class="relative">
+                            <input class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-lg" id="e2" type="number" value="250" oninput="calculateImpulse()">
+                            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                <span class="text-gray-500">V</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex flex-col gap-3">
+                        <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl flex justify-between items-center">
+                            <p class="text-sm text-blue-900 font-bold">巻替 試験電圧</p>
+                            <p class="text-xl font-mono font-semibold text-blue-700" id="rewindResult">2652 V</p>
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-xl flex justify-between items-center">
+                            <p class="text-sm text-emerald-900 font-bold">白コイル 試験電圧</p>
+                            <p class="text-xl font-mono font-semibold text-emerald-700" id="whiteResult">1989 V</p>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 p-4 rounded-xl flex justify-between items-center">
+                            <p class="text-sm text-amber-900 font-bold">O/H 試験電圧</p>
+                            <p class="text-xl font-mono font-semibold text-amber-700" id="ohResult">1989 V</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ボトムナビゲーション（タブ切り替え） -->
+    <nav class="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50">
+        <div class="flex justify-around max-w-md mx-auto">
+            <!-- タブ1 -->
+            <button onclick="switchTab('app-resistance', this)" class="tab-btn flex-1 py-4 text-sm font-bold text-gray-400 hover:text-blue-600 focus:outline-none transition-colors">
+                巻線抵抗
+            </button>
+            <!-- タブ2 -->
+            <button onclick="switchTab('app-balance', this)" class="tab-btn flex-1 py-4 text-sm font-bold text-gray-400 hover:text-blue-600 focus:outline-none transition-colors">
+                バランス
+            </button>
+            <!-- タブ3（初期選択状態） -->
+            <button onclick="switchTab('app-impulse', this)" class="tab-btn active-tab flex-1 py-4 text-sm font-bold text-blue-600 border-t-2 border-blue-600 focus:outline-none transition-colors">
+                インパルス
+            </button>
+        </div>
+    </nav>
+
+    <!-- スクリプト領域 -->
+    <script>
+        // ==========================================
+        // UI制御：タブ切り替え処理
+        // ==========================================
+        function switchTab(tabId, btnElement) {
+            // 全てのセクションを隠す
+            document.getElementById('app-resistance').classList.add('hidden-tab');
+            document.getElementById('app-balance').classList.add('hidden-tab');
+            document.getElementById('app-impulse').classList.add('hidden-tab');
+
+            // 対象のセクションだけ表示する
+            document.getElementById(tabId).classList.remove('hidden-tab');
+
+            // 全てのボタンのデザインをリセット
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('text-blue-600', 'border-t-2', 'border-blue-600');
+                btn.classList.add('text-gray-400');
+            });
+
+            // クリックされたボタンをアクティブにする
+            btnElement.classList.remove('text-gray-400');
+            btnElement.classList.add('text-blue-600', 'border-t-2', 'border-blue-600');
+        }
+
+        // ==========================================
+        // アプリ3：インパルス試験 計算ロジック
+        // ==========================================
+        function calculateImpulse() {
+            const e2 = parseFloat(document.getElementById('e2').value);
+            if (isNaN(e2) || e2 < 0) {
+                document.getElementById('rewindResult').innerText = '- V';
+                document.getElementById('whiteResult').innerText = '- V';
+                document.getElementById('ohResult').innerText = '- V';
+                return;
+            }
+            const vac = 2 * e2 + 1000;
+            const rewindV = vac * Math.SQRT2 * 1.25;
+            document.getElementById('rewindResult').innerText = Math.round(rewindV) + ' V';
+            document.getElementById('whiteResult').innerText = Math.round(rewindV * 0.75) + ' V';
+            document.getElementById('ohResult').innerText = Math.round(rewindV * 0.75) + ' V';
+        }
+        // 初期実行
+        calculateImpulse();
+
+        // ==========================================
+        // アプリ1・2：巻線抵抗・バランスのロジックをここに追加
+        // ==========================================
+        // 例: function calculateResistance() { ... }
+        // 例: function calculateBalance() { ... }
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>バランサー安全率判定ツール</title>
     <style>
         body {
