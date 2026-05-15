@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>技術計算ツール統合版</title>
+    <title>技術計算ツール統合版（完全版）</title>
     <style>
         /* ========================================== */
         /* 全体・共通デザイン */
         /* ========================================== */
         body { font-family: 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 15px; background-color: #f4f7f6; color: #333; padding-bottom: 40px; }
 
-        /* タブ切り替えボタン（6つ対応：3列×2段に自動調整） */
+        /* タブ切り替えボタン */
         .tab-container { display: flex; justify-content: center; margin-bottom: 20px; gap: 6px; flex-wrap: wrap; max-width: 480px; margin-left: auto; margin-right: auto; }
         .tab-button { padding: 10px 5px; font-size: 13px; font-weight: bold; cursor: pointer; background: #fff; border: 2px solid #e0e0e0; border-radius: 8px; color: #666; transition: all 0.2s; flex: 1 1 calc(33.3% - 8px); min-width: 90px; text-align: center; }
         .tab-button.active { background: #3498db; color: white; border-color: #3498db; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); }
@@ -22,6 +22,19 @@
         /* カードの枠組み */
         .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 25px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box; }
         .card-title { font-size: 18px; text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-weight: bold; }
+
+        /* 図解画像用のスタイル */
+        .diagram-img {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px auto;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
 
         /* 入力フォーム共通 */
         .form-group { margin-bottom: 12px; text-align: left; }
@@ -63,7 +76,7 @@
 
     <div class="tab-container">
         <button class="tab-button" onclick="showTab('app-resistance', this)">巻線抵抗</button>
-        <button class="tab-button" onclick="showTab('app-balance', this)">バランス安全率（開発中）</button>
+        <button class="tab-button" onclick="showTab('app-balance', this)">バランス</button>
         <button class="tab-button" onclick="showTab('app-impulse', this)">インパルス</button>
         <button class="tab-button" onclick="showTab('app-packing', this)">端子台(多孔)</button>
         <button class="tab-button" onclick="showTab('app-cone-packing', this)">端子台(円錐)</button>
@@ -128,6 +141,8 @@
         <div class="card">
             <h2 class="card-title">多孔形パッキン式 端子台締付</h2>
             
+            <img src="多孔形.png" alt="多孔形パッキンの図解" class="diagram-img">
+
             <div class="input-section-title">ケーブル情報</div>
             <div class="grid-2col">
                 <div class="form-group"><label>外径 d (mm)</label><input type="number" id="pack_d" value="7" oninput="calculatePacking()"></div>
@@ -162,6 +177,8 @@
         <div class="card">
             <h2 class="card-title">円錐パッキン式 端子台締付</h2>
             
+            <img src="円錐.png" alt="円錐パッキンの図解" class="diagram-img">
+
             <div class="input-section-title">端子台（受け側）情報</div>
             <div class="grid-3col">
                 <div class="form-group"><label>上部穴 a0</label><input type="number" id="cp_a0" value="20.4" oninput="calculateConePacking()"></div>
@@ -197,6 +214,8 @@
     <div id="app-cyl-packing" class="app-section active">
         <div class="card">
             <h2 class="card-title">円柱パッキン式 端子台締付</h2>
+
+            <img src="円柱.png" alt="円柱パッキンの図解" class="diagram-img">
 
             <div class="input-section-title">端子台・ケーブル情報</div>
             <div class="grid-3col">
@@ -316,7 +335,7 @@
             document.getElementById('cp_c_final').innerText = c_5percent.toFixed(2) + " mm";
         }
 
-        // ⑥ 端子台(円柱) (NEW!)
+        // ⑥ 端子台(円柱)
         function calculateCyl() {
             const a0 = parseFloat(document.getElementById('cyl_a0').value);
             const D = parseFloat(document.getElementById('cyl_D').value);
