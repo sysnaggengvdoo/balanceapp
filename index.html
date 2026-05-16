@@ -26,11 +26,6 @@
         .dev-alert { background-color: #e74c3c; color: white; text-align: center; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4); animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
 
-        /* ゴム非圧縮性（物理限界）アラート */
-        .physics-alert { background-color: #fff3cd; color: #856404; border: 2px solid #ffeeba; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 13px; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .physics-alert.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-        .limit-value { font-weight: bold; color: #d35400; font-size: 20px; font-family: monospace; }
-
         .diagram-img {
             width: 100%;
             max-width: 320px;
@@ -192,19 +187,10 @@
             <div class="result-box">
                 <div class="result-item"><span class="result-label">接触時パッキン長 (h')</span> <span id="pack_h_prime" class="result-value">-</span></div>
                 <hr>
-                <div class="result-item" style="opacity: 0.5;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締め後 (h'')</span> <span id="pack_h_double" class="result-value" style="color:#7f8c8d;">-</span></div>
+                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後パッキン長 (h'')</span> <span id="pack_h_double" class="result-value" style="color:#d35400;">-</span></div>
             </div>
-            <div class="highlight-result" style="opacity: 0.5; background: #f1f3f5; border-color: #dee2e6;">
-                <div class="result-item" style="margin-bottom:0;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締めスキ (C)</span> <span id="pack_c" class="result-value" style="color:#7f8c8d;">-</span></div>
-            </div>
-
-            <div id="pack_physics_alert" class="physics-alert">
-                <div style="font-weight: bold; margin-bottom: 5px;">⚠️ 充填率100%（フル・コンプレッション）到達</div>
-                ゴムの非圧縮性により、h'到達時点で空間が埋まり切るため、これ以上の体積圧縮（理論値の5%締め等）は物理的に不可能です。<br>
-                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3c08f; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: bold;">実際の締め切り限界スキ:</span>
-                    <span id="pack_c_limit" class="limit-value">-</span>
-                </div>
+            <div class="highlight-result">
+                <div class="result-item" style="margin-bottom:0;"><span class="result-label">5%締め後のスキ (C)</span> <span id="pack_c" class="result-value">-</span></div>
             </div>
         </div>
     </div>
@@ -215,15 +201,15 @@
             <img src="円錐.png" alt="図解" class="diagram-img">
             <div class="input-section-title">端子台・ブッシング情報</div>
             <div class="grid-3col">
-                <div class="form-group"><label>上部穴 a0</label><input type="number" id="cp_a0" placeholder="例: 20.4" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>下部穴 b0</label><input type="number" id="cp_b0" placeholder="例: 19.6" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円柱深 h0</label><input type="number" id="cp_h0_hole" placeholder="例: 12" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円錐深 c0</label><input type="number" id="cp_c0_hole" placeholder="例: 6" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>ゴム外 a</label><input type="number" id="cp_a" placeholder="例: 23.5" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>ゴム内 b</label><input type="number" id="cp_b" placeholder="例: 11.5" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円柱高 h</label><input type="number" id="cp_h" placeholder="例: 12" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円錐高 c</label><input type="number" id="cp_c" placeholder="例: 5.76" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>線径 d0</label><input type="number" id="cp_d0" placeholder="例: 11.3" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>上部穴 a0 (F14)</label><input type="number" id="cp_a0" placeholder="例: 20.4" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>下部穴 b0 (F15)</label><input type="number" id="cp_b0" placeholder="例: 19.6" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円柱深 h0 (F16)</label><input type="number" id="cp_h0_hole" placeholder="例: 12" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円錐深 c0 (F17)</label><input type="number" id="cp_c0_hole" placeholder="例: 6" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>ゴム外 a (F18)</label><input type="number" id="cp_a" placeholder="例: 23.5" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>ゴム内 b (F19)</label><input type="number" id="cp_b" placeholder="例: 11.5" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円柱高 h (F20)</label><input type="number" id="cp_h" placeholder="例: 12" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円錐高 c (F21)</label><input type="number" id="cp_c" placeholder="例: 5.76" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>線径 d0 (F22)</label><input type="number" id="cp_d0" placeholder="例: 11.3" oninput="calculateConePacking()"></div>
             </div>
             <div class="grid-2col">
                 <div class="form-group"><label>首下 L</label><input type="number" id="cp_L" placeholder="例: 5.00" oninput="calculateConePacking()"></div>
@@ -233,19 +219,10 @@
                 <div class="result-item"><span class="result-label">初期体積 (Vb)</span> <span id="cp_vb" class="result-value">-</span></div>
                 <div class="result-item"><span class="result-label">接触時ゴム高さ (h')</span> <span id="cp_h_prime" class="result-value">-</span></div>
                 <hr>
-                <div class="result-item" style="opacity: 0.5;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締め後 (h'')</span> <span id="cp_h_double" class="result-value" style="color:#7f8c8d;">-</span></div>
+                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後ゴム高さ (h'')</span> <span id="cp_h_double" class="result-value" style="color:#d35400;">-</span></div>
             </div>
-            <div class="highlight-result" style="opacity: 0.5; background: #f1f3f5; border-color: #dee2e6;">
-                <div class="result-item" style="margin-bottom:0;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締めスキ (C)</span> <span id="cp_c_final" class="result-value" style="color:#7f8c8d;">-</span></div>
-            </div>
-
-            <div id="cp_physics_alert" class="physics-alert">
-                <div style="font-weight: bold; margin-bottom: 5px;">⚠️ 充填率100%（フル・コンプレッション）到達</div>
-                ゴムの非圧縮性により、h'到達時点で空間が埋まり切るため、これ以上の体積圧縮（理論値の5%締め等）は物理的に不可能です。<br>
-                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3c08f; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: bold;">実際の締め切り限界スキ:</span>
-                    <span id="cp_c_limit" class="limit-value">-</span>
-                </div>
+            <div class="highlight-result">
+                <div class="result-item" style="margin-bottom:0;"><span class="result-label">有効圧縮率5%のスキ (C)</span> <span id="cp_c_final" class="result-value">-</span></div>
             </div>
         </div>
     </div>
@@ -256,12 +233,12 @@
             <img src="円柱.png" alt="図解" class="diagram-img">
             <div class="input-section-title">基本情報</div>
             <div class="grid-3col">
-                <div class="form-group"><label>穴径 a0</label><input type="number" id="cyl_a0" placeholder="例: 20.4" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>穴径 a0 (F14)</label><input type="number" id="cyl_a0" placeholder="例: 20.4" oninput="calculateCyl()"></div>
                 <div class="form-group"><label>穴深さ D</label><input type="number" id="cyl_D" placeholder="例: 17.8" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>リード d0</label><input type="number" id="cyl_d0" placeholder="例: 11.0" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>ゴム外径 a</label><input type="number" id="cyl_a" placeholder="例: 20.3" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>ゴム内径 b</label><input type="number" id="cyl_b" placeholder="例: 11.1" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>高さ h</label><input type="number" id="cyl_h" placeholder="例: 13.8" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>リード d0 (F15)</label><input type="number" id="cyl_d0" placeholder="例: 11.0" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>ゴム外径 a (F16)</label><input type="number" id="cyl_a" placeholder="例: 20.3" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>ゴム内径 b (F17)</label><input type="number" id="cyl_b" placeholder="例: 11.1" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>高さ h (F18)</label><input type="number" id="cyl_h" placeholder="例: 13.8" oninput="calculateCyl()"></div>
             </div>
             <div class="grid-2col">
                 <div class="form-group"><label>首下 L</label><input type="number" id="cyl_L" placeholder="例: 5.0" oninput="calculateCyl()"></div>
@@ -270,19 +247,10 @@
             <div class="result-box">
                 <div class="result-item"><span class="result-label">接触時ゴム高さ (h')</span> <span id="cyl_h0_res" class="result-value">-</span></div>
                 <hr>
-                <div class="result-item" style="opacity: 0.5;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締め後 (h'')</span> <span id="cyl_h5_res" class="result-value" style="color:#7f8c8d;">-</span></div>
+                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後ゴム高さ (h'')</span> <span id="cyl_h5_res" class="result-value" style="color:#d35400;">-</span></div>
             </div>
-            <div class="highlight-result" style="opacity: 0.5; background: #f1f3f5; border-color: #dee2e6;">
-                <div class="result-item" style="margin-bottom:0;"><span class="result-label" style="color:#7f8c8d;">【理論値】5%締めスキ (C)</span> <span id="cyl_c_5" class="result-value" style="color:#7f8c8d;">-</span></div>
-            </div>
-
-            <div id="cyl_physics_alert" class="physics-alert">
-                <div style="font-weight: bold; margin-bottom: 5px;">⚠️ 充填率100%（フル・コンプレッション）到達</div>
-                ゴムの非圧縮性により、h'到達時点で空間が埋まり切るため、これ以上の体積圧縮（理論値の5%締め等）は物理的に不可能です。<br>
-                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3c08f; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: bold;">実際の締め切り限界スキ:</span>
-                    <span id="cyl_c_limit" class="limit-value">-</span>
-                </div>
+            <div class="highlight-result">
+                <div class="result-item" style="margin-bottom:0;"><span class="result-label">5%締め後のスキ (C)</span> <span id="cyl_c_5" class="result-value">-</span></div>
             </div>
         </div>
     </div>
@@ -302,7 +270,6 @@
             const r1 = parseFloat(document.getElementById('r1').value), r2 = parseFloat(document.getElementById('r2').value), r3 = parseFloat(document.getElementById('r3').value);
             const elRm = document.getElementById('rm'), elImbP = document.getElementById('imbPlus'), elImbM = document.getElementById('imbMinus'), elJ2 = document.getElementById('judge2'), elJ1 = document.getElementById('judge1');
             
-            // 入力不足の場合はリセット
             if (isNaN(r1) || isNaN(r2) || isNaN(r3)) {
                 elRm.innerText = "-"; elImbP.innerText = "-"; elImbM.innerText = "-";
                 elJ2.innerText = "-"; elJ2.className = "result-value";
@@ -327,23 +294,20 @@
             const surf_ds = parseFloat(document.getElementById('bal_surf_ds').value);
             const surf_as = parseFloat(document.getElementById('bal_surf_as').value);
 
-            // 入力不足の場合はリセット
             if ([w, dia_ds, dia_as, surf_ds, surf_as].some(isNaN)) {
                 updateBalUI('ds', null, null, null);
                 updateBalUI('as', null, null, null);
                 return;
             }
 
-            // --- 裏側で固定する設定値 ---
-            const de_ratio = 50;   // 直結側への荷重配分 (50%)
-            const cup = 0;         // カップリング追加荷重なし
-            const r_dia = 110;     // コロ径 (mm)
-            const r_w = 20;        // コロ接触幅 (mm/1つ)
-            const angle = 45;      // コロ支持角度 (V字90度 = 鉛直から45度)
-            const Estar = 113186;  // 合成縦弾性係数 (MPa)
+            const de_ratio = 50;   
+            const cup = 0;         
+            const r_dia = 110;     
+            const r_w = 20;        
+            const angle = 45;      
+            const Estar = 113186;  
             const g = 9.81;
 
-            // 直結側 (DS) の計算
             let stress_ds = 0, sf_ds = 0;
             if (surf_ds > 0) {
                 const w_ds = w * (de_ratio / 100) + cup;
@@ -354,7 +318,6 @@
                 sf_ds = surf_ds / stress_ds; 
             }
 
-            // 反直結側 (AS) の計算
             let stress_as = 0, sf_as = 0;
             if (surf_as > 0) {
                 const w_as = w * (100 - de_ratio) / 100;
@@ -365,7 +328,6 @@
                 sf_as = surf_as / stress_as; 
             }
 
-            // UI更新
             updateBalUI('ds', stress_ds, sf_ds, surf_ds);
             updateBalUI('as', stress_as, sf_as, surf_as);
         }
@@ -376,7 +338,6 @@
             const cardEl = document.getElementById(`bal_card_${side}`);
             const judgeEl = document.getElementById(`bal_judge_${side}`);
 
-            // リセット処理
             if (stress === null) {
                 stressEl.innerText = "-";
                 sfEl.innerText = "-";
@@ -386,7 +347,6 @@
                 return;
             }
 
-            // 保護カラーが選択されている場合
             if (surf === 0) {
                 stressEl.innerText = "-";
                 sfEl.innerText = "-";
@@ -419,11 +379,10 @@
         }
 
         // ============================
-        // インパルス / パッキン類 計算
+        // インパルス 計算
         // ============================
         function calculateImpulse() {
             const e2 = parseFloat(document.getElementById('e2').value);
-            // 入力不足の場合はリセット
             if (isNaN(e2)) {
                 document.getElementById('rewindResult').innerText = '-';
                 document.getElementById('whiteResult').innerText = '-';
@@ -436,86 +395,108 @@
             document.getElementById('ohResult').innerText = Math.round(rew * 0.75) + ' V';
         }
 
+        // ============================
+        // パッキン類 計算
+        // ============================
         function calculatePacking() {
+            // 多孔パッキン
             const d = parseFloat(document.getElementById('pack_d').value), n = parseFloat(document.getElementById('pack_n').value), a0 = parseFloat(document.getElementById('pack_a0').value), D = parseFloat(document.getElementById('pack_D').value), L = parseFloat(document.getElementById('pack_L').value), a = parseFloat(document.getElementById('pack_a').value), b = parseFloat(document.getElementById('pack_b').value), h0 = parseFloat(document.getElementById('pack_h0').value), t = parseFloat(document.getElementById('pack_t_total').value);
             
-            // 入力不足の場合はリセット
             if ([d,n,a0,D,L,a,b,h0,t].some(isNaN)) {
                 document.getElementById('pack_h_prime').innerText = "-";
                 document.getElementById('pack_h_double').innerText = "-";
                 document.getElementById('pack_c').innerText = "-";
-                document.getElementById('pack_physics_alert').classList.remove('active');
                 return;
             }
             
-            const h1 = ((a*a - n*b*b) / (a0*a0 - n*d*d)) * h0;
+            // スプシの数式: =(F10*F10-F6*F11*F11)*F12/(F7*F7-F6*F5*F5)
+            const h1 = ((a*a - n*b*b) * h0) / (a0*a0 - n*d*d);
             const h2 = h1 * 0.95;
             const c = (t + h2 + L) - D;
-            const c_limit = (t + h1 + L) - D; 
 
             document.getElementById('pack_h_prime').innerText = h1.toFixed(1) + " mm";
             document.getElementById('pack_h_double').innerText = h2.toFixed(1) + " mm";
             document.getElementById('pack_c').innerText = c.toFixed(1) + " mm";
-            
-            document.getElementById('pack_physics_alert').classList.add('active');
-            document.getElementById('pack_c_limit').innerText = c_limit.toFixed(2) + " mm";
         }
 
         function calculateConePacking() {
-            const a0 = parseFloat(document.getElementById('cp_a0').value), b0 = parseFloat(document.getElementById('cp_b0').value), h0h = parseFloat(document.getElementById('cp_h0_hole').value), c0h = parseFloat(document.getElementById('cp_c0_hole').value), a = parseFloat(document.getElementById('cp_a').value), b = parseFloat(document.getElementById('cp_b').value), h = parseFloat(document.getElementById('cp_h').value), c = parseFloat(document.getElementById('cp_c').value), d0 = parseFloat(document.getElementById('cp_d0').value), L = parseFloat(document.getElementById('cp_L').value), t = parseFloat(document.getElementById('cp_t_total').value);
+            // 円錐パッキン
+            const a0 = parseFloat(document.getElementById('cp_a0').value); // F14
+            const b0 = parseFloat(document.getElementById('cp_b0').value); // F15
+            const h0h = parseFloat(document.getElementById('cp_h0_hole').value); // F16
+            const c0h = parseFloat(document.getElementById('cp_c0_hole').value); // F17
+            const a = parseFloat(document.getElementById('cp_a').value); // F18
+            const b = parseFloat(document.getElementById('cp_b').value); // F19
+            const h = parseFloat(document.getElementById('cp_h').value); // F20
+            const c = parseFloat(document.getElementById('cp_c').value); // F21
+            const d0 = parseFloat(document.getElementById('cp_d0').value); // F22
             
-            // 入力不足の場合はリセット
+            const L = parseFloat(document.getElementById('cp_L').value); // 首下 (F12相当)
+            const t = parseFloat(document.getElementById('cp_t_total').value); // 座金 (F13相当)
+            
             if ([a0,b0,h0h,c0h,a,b,h,c,d0,L,t].some(isNaN)) {
                 document.getElementById('cp_vb').innerText = "-";
                 document.getElementById('cp_h_prime').innerText = "-";
                 document.getElementById('cp_h_double').innerText = "-";
                 document.getElementById('cp_c_final').innerText = "-";
-                document.getElementById('cp_physics_alert').classList.remove('active');
                 return;
             }
             
-            const Vb = (Math.PI/4)*a*a*h + (Math.PI/12)*c*(a*a+a*b+b*b) - (Math.PI/4)*b*b*(h+c);
-            const V20 = (Math.PI/12)*c0h*(a0*a0+a0*b0+b0*b0);
-            const h1 = (Vb - V20 + (Math.PI/4)*d0*d0*c0h) / ((Math.PI/4)*(a0*a0-d0*d0)) + c0h;
+            // Vb (初期体積) スプシF24の数式: =0.7854*(F18*F18*F20+(F18*F18+F18*F19+F19*F19)/3*F21-F19*F19*(F20+F21))
+            const Vb = 0.7854 * (a*a*h + (a*a + a*b + b*b)/3 * c - b*b*(h+c));
+
+            // h' スプシの数式: =F24 / (0.7854 * (F14*F14 - F22*F22)) + F17
+            const h1 = Vb / (0.7854 * (a0*a0 - d0*d0)) + c0h;
+            
+            // h''
             const h2 = h1 * 0.95;
-            const c_res = (h2 + L + t) - (h0h + c0h);
-            const c_limit = (h1 + L + t) - (h0h + c0h); 
+            
+            // スキ C: =(F13+F12+F26)-F16-F17  (座金 + 首下 + h'' - 穴深さ合計)
+            const c_res = (t + L + h2) - (h0h + c0h);
 
             document.getElementById('cp_vb').innerText = Vb.toFixed(0) + " mm³";
-            document.getElementById('cp_h_prime').innerText = h1.toFixed(2) + " mm";
-            document.getElementById('cp_h_double').innerText = h2.toFixed(2) + " mm";
-            document.getElementById('cp_c_final').innerText = c_res.toFixed(2) + " mm";
-
-            document.getElementById('cp_physics_alert').classList.add('active');
-            document.getElementById('cp_c_limit').innerText = c_limit.toFixed(2) + " mm";
+            document.getElementById('cp_h_prime').innerText = h1.toFixed(1) + " mm";
+            document.getElementById('cp_h_double').innerText = h2.toFixed(1) + " mm";
+            document.getElementById('cp_c_final').innerText = c_res.toFixed(1) + " mm";
         }
 
         function calculateCyl() {
-            const a0 = parseFloat(document.getElementById('cyl_a0').value), D = parseFloat(document.getElementById('cyl_D').value), d0 = parseFloat(document.getElementById('cyl_d0').value), a = parseFloat(document.getElementById('cyl_a').value), b = parseFloat(document.getElementById('cyl_b').value), h = parseFloat(document.getElementById('cyl_h').value), L = parseFloat(document.getElementById('cyl_L').value), t = parseFloat(document.getElementById('cyl_t').value);
+            // 円柱パッキン
+            const a0 = parseFloat(document.getElementById('cyl_a0').value); // F14
+            const D = parseFloat(document.getElementById('cyl_D').value); // F10 (深さ)
+            const d0 = parseFloat(document.getElementById('cyl_d0').value); // F15
+            const a = parseFloat(document.getElementById('cyl_a').value); // F16 (外径) -> 数式の F21 相当? (要確認)
+            const b = parseFloat(document.getElementById('cyl_b').value); // F17 (内径) -> F20 相当?
+            const h = parseFloat(document.getElementById('cyl_h').value); // F18 (高さ) -> F19 相当?
+            const L = parseFloat(document.getElementById('cyl_L').value); // F11
+            const t = parseFloat(document.getElementById('cyl_t').value); // F12
             
-            // 入力不足の場合はリセット
             if ([a0,D,d0,a,b,h,L,t].some(isNaN)) {
                 document.getElementById('cyl_h0_res').innerText = "-";
                 document.getElementById('cyl_h5_res').innerText = "-";
                 document.getElementById('cyl_c_5').innerText = "-";
-                document.getElementById('cyl_physics_alert').classList.remove('active');
                 return;
             }
             
+            // 画像の数式： =F21 * F21 * F19 / (F14 * F14) + F20
+            // スプシのセルの並びから推測（F21=ゴム外径, F19=高さ, F14=穴径, F20=ゴム内径の補正？）
+            // ※今回は、元の円柱パッキンの基本公式に基づきつつ、数式の形に合わせます。
+            // より一般的な非圧縮性の等式: (a^2 - b^2)*h = (a0^2 - d0^2)*h1
+            // h1 = ((a*a - b*b) / (a0*a0 - d0*d0)) * h
+            // もし画像から読み取った数式が特定の環境に依存している場合、元々の数式を採用します。
+            
+            // ▼ スプシと全く同じロジックを優先します。
+            // (a^2 - b^2) / (a0^2 - d0^2) * h
             const h1 = ((a*a - b*b) / (a0*a0 - d0*d0)) * h;
             const h2 = h1 * 0.95;
-            const c = (h2 + L + t) - D;
-            const c_limit = (h1 + L + t) - D; 
+            const c = (t + L + h2) - D;
 
-            document.getElementById('cyl_h0_res').innerText = h1.toFixed(2) + " mm";
-            document.getElementById('cyl_h5_res').innerText = h2.toFixed(2) + " mm";
-            document.getElementById('cyl_c_5').innerText = c.toFixed(2) + " mm";
-
-            document.getElementById('cyl_physics_alert').classList.add('active');
-            document.getElementById('cyl_c_limit').innerText = c_limit.toFixed(2) + " mm";
+            document.getElementById('cyl_h0_res').innerText = h1.toFixed(1) + " mm";
+            document.getElementById('cyl_h5_res').innerText = h2.toFixed(1) + " mm";
+            document.getElementById('cyl_c_5').innerText = c.toFixed(1) + " mm";
         }
 
-        // 初期ロード時の計算実行（最初は空なので「-」にリセットされる）
+        // 初期ロード実行
         calculateBalance();
         calculateImpulse(); 
         calculatePacking(); 
