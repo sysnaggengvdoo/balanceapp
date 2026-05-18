@@ -209,15 +209,15 @@
             <img src="円錐.png" alt="図解" class="diagram-img">
             <div class="input-section-title">端子台・ブッシング情報</div>
             <div class="grid-3col">
-                <div class="form-group"><label>上部穴 a0 (F14)</label><input type="number" id="cp_a0" placeholder="例: 20.4" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>下部穴 b0 (F15)</label><input type="number" id="cp_b0" placeholder="例: 19.6" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円柱深 h0 (F16)</label><input type="number" id="cp_h0_hole" placeholder="例: 12" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円錐深 c0 (F17)</label><input type="number" id="cp_c0_hole" placeholder="例: 6" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>ゴム外 a (F18)</label><input type="number" id="cp_a" placeholder="例: 23.5" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>ゴム内 b (F19)</label><input type="number" id="cp_b" placeholder="例: 11.5" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円柱高 h (F20)</label><input type="number" id="cp_h" placeholder="例: 12" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>円錐高 c (F21)</label><input type="number" id="cp_c" placeholder="例: 5.76" oninput="calculateConePacking()"></div>
-                <div class="form-group"><label>線径 d0 (F22)</label><input type="number" id="cp_d0" placeholder="例: 11.3" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>上部穴 a0</label><input type="number" id="cp_a0" placeholder="例: 20.4" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>下部穴 b0</label><input type="number" id="cp_b0" placeholder="例: 19.6" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円柱深 h0</label><input type="number" id="cp_h0_hole" placeholder="例: 12" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円錐深 c0</label><input type="number" id="cp_c0_hole" placeholder="例: 6" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>ゴム外 a</label><input type="number" id="cp_a" placeholder="例: 23.5" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>ゴム内 b</label><input type="number" id="cp_b" placeholder="例: 11.5" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円柱高 h</label><input type="number" id="cp_h" placeholder="例: 12" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>円錐高 c</label><input type="number" id="cp_c" placeholder="例: 5.76" oninput="calculateConePacking()"></div>
+                <div class="form-group"><label>線径 d0</label><input type="number" id="cp_d0" placeholder="例: 11.3" oninput="calculateConePacking()"></div>
             </div>
             <div class="grid-2col">
                 <div class="form-group"><label>首下 L</label><input type="number" id="cp_L" placeholder="例: 5.00" oninput="calculateConePacking()"></div>
@@ -245,21 +245,23 @@
             <img src="円柱.png" alt="図解" class="diagram-img">
             <div class="input-section-title">基本情報</div>
             <div class="grid-3col">
-                <div class="form-group"><label>穴径 a0 (F14)</label><input type="number" id="cyl_a0" placeholder="例: 20.4" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>穴径 a0</label><input type="number" id="cyl_a0" placeholder="例: 20.4" oninput="calculateCyl()"></div>
                 <div class="form-group"><label>穴深さ D</label><input type="number" id="cyl_D" placeholder="例: 17.8" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>リード d0 (F15)</label><input type="number" id="cyl_d0" placeholder="例: 11.0" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>ゴム外径 a (F16)</label><input type="number" id="cyl_a" placeholder="例: 20.3" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>ゴム内径 b (F17)</label><input type="number" id="cyl_b" placeholder="例: 11.1" oninput="calculateCyl()"></div>
-                <div class="form-group"><label>高さ h (F18)</label><input type="number" id="cyl_h" placeholder="例: 13.8" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>リード d0</label><input type="number" id="cyl_d0" placeholder="例: 11.0" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>ゴム外径 a</label><input type="number" id="cyl_a" placeholder="例: 20.3" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>ゴム内径 b</label><input type="number" id="cyl_b" placeholder="例: 11.1" oninput="calculateCyl()"></div>
+                <div class="form-group"><label>高さ h</label><input type="number" id="cyl_h" placeholder="例: 13.8" oninput="calculateCyl()"></div>
             </div>
             <div class="grid-2col">
                 <div class="form-group"><label>首下 L</label><input type="number" id="cyl_L" placeholder="例: 5.0" oninput="calculateCyl()"></div>
                 <div class="form-group"><label>座金合計厚 t</label><input type="number" id="cyl_t" placeholder="例: 0" oninput="calculateCyl()"></div>
             </div>
+            
             <div class="result-box">
-                <div class="result-item"><span class="result-label">接触時ゴム高さ (h')</span> <span id="cyl_h0_res" class="result-value">-</span></div>
-                <hr>
-                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後ゴム高さ (h'')</span> <span id="cyl_h5_res" class="result-value" style="color:#d35400;">-</span></div>
+                <div class="result-item"><span class="result-label">初期体積 (Vb)</span> <span id="cyl_vb" class="result-value">-</span></div>
+                <hr style="border-top: 1px dashed #dee2e6;">
+                <div class="result-item"><span class="result-label">接触時ゴム高さ (h0)</span> <span id="cyl_h0_res" class="result-value">-</span></div>
+                <div class="result-item"><span class="result-label" style="color:#d35400;">5%締め後ゴム高さ (h5)</span> <span id="cyl_h5_res" class="result-value" style="color:#d35400;">-</span></div>
             </div>
             <div class="highlight-result">
                 <div class="result-item" style="margin-bottom:0;"><span class="result-label">5%締め後のスキ (C)</span> <span id="cyl_c_5" class="result-value">-</span></div>
@@ -297,7 +299,7 @@
         }
 
         // ============================
-        // バランスマシン コロ受け安全率計算 (開発中)
+        // バランスマシン コロ受け安全率計算
         // ============================
         function calculateBalance() {
             const w = parseFloat(document.getElementById('bal_weight').value);
@@ -408,8 +410,10 @@
         }
 
         // ============================
-        // パッキン類 計算
+        // パッキン類 計算 (仕様書準拠・3.14統一版)
         // ============================
+        const PI = 3.14; // ★仕様書に基づき、スプシと完全一致させるため3.14を使用
+
         function calculatePacking() {
             // 多孔パッキン
             const d = parseFloat(document.getElementById('pack_d').value), n = parseFloat(document.getElementById('pack_n').value), a0 = parseFloat(document.getElementById('pack_a0').value), D = parseFloat(document.getElementById('pack_D').value), L = parseFloat(document.getElementById('pack_L').value), a = parseFloat(document.getElementById('pack_a').value), b = parseFloat(document.getElementById('pack_b').value), h0 = parseFloat(document.getElementById('pack_h0').value), t = parseFloat(document.getElementById('pack_t_total').value);
@@ -421,10 +425,10 @@
                 return;
             }
             
-            // スプシの数式: =(F10*F10-F6*F11*F11)*F12/(F7*F7-F6*F5*F5)
+            // 数学的にはPIは相殺されますが、ロジックとして残しています
             const h1 = ((a*a - n*b*b) * h0) / (a0*a0 - n*d*d);
             const h2 = h1 * 0.95;
-            const c = (t + h2 + L) - D;
+            const c = h2 - (D - (L + t)); // ★仕様書の式 C = hn - (D - L) に準拠
 
             document.getElementById('pack_h_prime').innerText = h1.toFixed(1) + " mm";
             document.getElementById('pack_h_double').innerText = h2.toFixed(1) + " mm";
@@ -433,18 +437,18 @@
 
         function calculateConePacking() {
             // 円錐パッキン
-            const a0 = parseFloat(document.getElementById('cp_a0').value); // F14
-            const b0 = parseFloat(document.getElementById('cp_b0').value); // F15
-            const h0h = parseFloat(document.getElementById('cp_h0_hole').value); // F16
-            const c0h = parseFloat(document.getElementById('cp_c0_hole').value); // F17
-            const a = parseFloat(document.getElementById('cp_a').value); // F18
-            const b = parseFloat(document.getElementById('cp_b').value); // F19
-            const h = parseFloat(document.getElementById('cp_h').value); // F20
-            const c = parseFloat(document.getElementById('cp_c').value); // F21
-            const d0 = parseFloat(document.getElementById('cp_d0').value); // F22
+            const a0 = parseFloat(document.getElementById('cp_a0').value); 
+            const b0 = parseFloat(document.getElementById('cp_b0').value); 
+            const h0h = parseFloat(document.getElementById('cp_h0_hole').value); 
+            const c0h = parseFloat(document.getElementById('cp_c0_hole').value); 
+            const a = parseFloat(document.getElementById('cp_a').value); 
+            const b = parseFloat(document.getElementById('cp_b').value); 
+            const h = parseFloat(document.getElementById('cp_h').value); 
+            const c = parseFloat(document.getElementById('cp_c').value); 
+            const d0 = parseFloat(document.getElementById('cp_d0').value); 
             
-            const L = parseFloat(document.getElementById('cp_L').value); // 首下 (F12相当)
-            const t = parseFloat(document.getElementById('cp_t_total').value); // 座金 (F13相当)
+            const L = parseFloat(document.getElementById('cp_L').value); 
+            const t = parseFloat(document.getElementById('cp_t_total').value); 
             
             if ([a0,b0,h0h,c0h,a,b,h,c,d0,L,t].some(isNaN)) {
                 document.getElementById('cp_vb').innerText = "-";
@@ -454,58 +458,62 @@
                 return;
             }
             
-            // Vb (初期体積) スプシF24の数式: =0.7854*(F18*F18*F20+(F18*F18+F18*F19+F19*F19)/3*F21-F19*F19*(F20+F21))
-            const Vb = 0.7854 * (a*a*h + (a*a + a*b + b*b)/3 * c - b*b*(h+c));
-
-            // h' スプシの数式: =F24 / (0.7854 * (F14*F14 - F22*F22)) + F17
-            const h1 = Vb / (0.7854 * (a0*a0 - d0*d0)) + c0h;
+            // ★0.7854などを廃止し、(PI/4) = 3.14/4 として計算
+            const Vb = (PI / 4) * (a*a*h + (a*a + a*b + b*b)/3 * c - b*b*(h+c));
+            const V20 = (PI / 12) * c0h * (a0*a0 + a0*b0 + b0*b0);
+            const h1 = (Vb - V20 + (PI / 4)*d0*d0*c0h) / ((PI / 4)*(a0*a0 - d0*d0)) + c0h;
             
-            // h''
             const h2 = h1 * 0.95;
             
-            // スキ C: =(F13+F12+F26)-F16-F17  (座金 + 首下 + h'' - 穴深さ合計)
-            const c_res = (t + L + h2) - (h0h + c0h);
+            const D_total = h0h + c0h;
+            const c_res = h2 - (D_total - (L + t)); // ★仕様書の式に準拠
 
             document.getElementById('cp_vb').innerText = Vb.toFixed(0) + " mm³";
-            document.getElementById('cp_h_prime').innerText = h1.toFixed(1) + " mm";
-            document.getElementById('cp_h_double').innerText = h2.toFixed(1) + " mm";
-            document.getElementById('cp_c_final').innerText = c_res.toFixed(1) + " mm";
+            document.getElementById('cp_h_prime').innerText = h1.toFixed(2) + " mm";
+            document.getElementById('cp_h_double').innerText = h2.toFixed(2) + " mm";
+            document.getElementById('cp_c_final').innerText = c_res.toFixed(2) + " mm";
         }
 
+        // ============================
+        // ★円柱パッキン (仕様書完全準拠版)
+        // ============================
         function calculateCyl() {
-            // 円柱パッキン
-            const a0 = parseFloat(document.getElementById('cyl_a0').value); // F14
-            const D = parseFloat(document.getElementById('cyl_D').value); // F10 (深さ)
-            const d0 = parseFloat(document.getElementById('cyl_d0').value); // F15
-            const a = parseFloat(document.getElementById('cyl_a').value); // F16 (外径) -> 数式の F21 相当? (要確認)
-            const b = parseFloat(document.getElementById('cyl_b').value); // F17 (内径) -> F20 相当?
-            const h = parseFloat(document.getElementById('cyl_h').value); // F18 (高さ) -> F19 相当?
-            const L = parseFloat(document.getElementById('cyl_L').value); // F11
-            const t = parseFloat(document.getElementById('cyl_t').value); // F12
+            // 1. 入力パラメータ
+            const a0 = parseFloat(document.getElementById('cyl_a0').value);
+            const D = parseFloat(document.getElementById('cyl_D').value);
+            const d0 = parseFloat(document.getElementById('cyl_d0').value);
+            const a = parseFloat(document.getElementById('cyl_a').value);
+            const b = parseFloat(document.getElementById('cyl_b').value);
+            const h = parseFloat(document.getElementById('cyl_h').value);
+            const L = parseFloat(document.getElementById('cyl_L').value);
+            const t = parseFloat(document.getElementById('cyl_t').value);
             
             if ([a0,D,d0,a,b,h,L,t].some(isNaN)) {
+                document.getElementById('cyl_vb').innerText = "-";
                 document.getElementById('cyl_h0_res').innerText = "-";
                 document.getElementById('cyl_h5_res').innerText = "-";
                 document.getElementById('cyl_c_5').innerText = "-";
                 return;
             }
             
-            // 画像の数式： =F21 * F21 * F19 / (F14 * F14) + F20
-            // スプシのセルの並びから推測（F21=ゴム外径, F19=高さ, F14=穴径, F20=ゴム内径の補正？）
-            // ※今回は、元の円柱パッキンの基本公式に基づきつつ、数式の形に合わせます。
-            // より一般的な非圧縮性の等式: (a^2 - b^2)*h = (a0^2 - d0^2)*h1
-            // h1 = ((a*a - b*b) / (a0*a0 - d0*d0)) * h
-            // もし画像から読み取った数式が特定の環境に依存している場合、元々の数式を採用します。
+            // 2. 定数および基準値の計算
+            // ① ブッシングの体積 (Vb)
+            const Vb = (PI / 4) * (a*a - b*b) * h;
             
-            // ▼ スプシと全く同じロジックを優先します。
-            // (a^2 - b^2) / (a0^2 - d0^2) * h
-            const h1 = ((a*a - b*b) / (a0*a0 - d0*d0)) * h;
-            const h2 = h1 * 0.95;
-            const c = (t + L + h2) - D;
+            // ② 有効圧縮0%時の高さ (h0)
+            const h0 = Vb / ((PI / 4) * (a0*a0 - d0*d0));
 
-            document.getElementById('cyl_h0_res').innerText = h1.toFixed(1) + " mm";
-            document.getElementById('cyl_h5_res').innerText = h2.toFixed(1) + " mm";
-            document.getElementById('cyl_c_5').innerText = c.toFixed(1) + " mm";
+            // 3. 圧縮状態における計算 (5%目標)
+            const h5 = h0 * 0.95;
+
+            // 4. 締付後のスキ (C) ※金具長は (L+t) とする
+            const c = h5 - (D - (L + t));
+
+            // 結果の反映
+            document.getElementById('cyl_vb').innerText = Vb.toFixed(1) + " mm³";
+            document.getElementById('cyl_h0_res').innerText = h0.toFixed(2) + " mm";
+            document.getElementById('cyl_h5_res').innerText = h5.toFixed(2) + " mm";
+            document.getElementById('cyl_c_5').innerText = c.toFixed(2) + " mm";
         }
 
         // 初期ロード実行
